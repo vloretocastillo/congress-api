@@ -1,4 +1,4 @@
-var data = {
+var dataHouse = {
     "status":"OK",
     "copyright":" Copyright (c) 2019 Pro Publica Inc. All Rights Reserved.",
     "results":[
@@ -20713,5 +20713,58 @@ var data = {
               ]
        }
     ]
- }
+}
+
+const data = dataHouse['results'][0]['members'] 
+
+const houseMembers = []
+
+for (let i = 0; i < data.length; i++) {
+    let currentMember = {}
+    currentMember.first_name = data[i].first_name
+    currentMember.middle_name = data[i].middle_name
+    currentMember.last_name = data[i].last_name
+    currentMember.state = data[i].state
+    currentMember.seniority = data[i].seniority
+    currentMember.party = data[i].party
+    currentMember.votes_with_party_pct = data[i].votes_with_party_pct + "%"
+    houseMembers.push(currentMember)
+}
+
+const table = document.getElementById("representatives-data")
+
+let first_name, last_name, party_votes, seniority, state, party
+
+for (let i = 0; i < houseMembers.length; i++) {
+
+  let tr = document.createElement('tr')
+
+  first_name = document.createElement('td') 
+  first_name.innerHTML = houseMembers[i].first_name
+  houseMembers[i].middle_name ? first_name.innerHTML += " " + houseMembers[i].middle_name : false
+  tr.appendChild(first_name)
+
+  last_name= document.createElement('td')
+  last_name.innerHTML =  houseMembers[i].last_name 
+  tr.appendChild(last_name)
+
+  state = document.createElement('td')
+  state.innerHTML = houseMembers[i].state 
+  tr.appendChild(state)
+
+  seniority = document.createElement('td')
+  seniority.innerHTML =  houseMembers[i].seniority 
+  tr.appendChild(seniority)
+
+  party = document.createElement('td')  
+  party.innerHTML = houseMembers[i].party 
+  tr.appendChild(party)
+
+  party_votes = document.createElement('td')
+  party_votes.innerHTML =  houseMembers[i].votes_with_party_pct
+  tr.appendChild(party_votes)
+
+  table.appendChild(tr)
+}
  
+// document.getElementById("representatives-data").innerHTML = JSON.stringify(dataHouse,null,2);

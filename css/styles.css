@@ -2,5 +2,117 @@
     margin: 0;
     padding: 0;
     color: rgb(85, 84, 84);
-    background-color: aliceblue;
+    /* background-color: rgb(237, 241, 232); */
+}
+
+
+body {
+    background-color: rgb(236, 233, 233)
+}
+/* NAVBAR */
+
+.current {
+    color: rgb(135, 145, 145);
+} 
+
+.nav-wrapper {
+    position: relative;
+    height: 40vh;
+    background-image: url('../assets/imgs/banner.jpg');
+    background-position: center; 
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+nav {
+    position: absolute;
+    z-index: 1;
+    /* right: 5%; */
+    bottom: 0;
+    width: 100%;
+    /* border: 1px solid red; */
+    text-align: right;
+
+}
+
+.dark-cover {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: black;
+    opacity:0.4;
+}
+
+nav ul {
+    text-decoration-style: none;
+    /* background-color: transparent */
+    margin-right: 4%;
+
+    
+}
+
+nav ul li {
+    display: inline-block;  
+    margin: 2%;
+    
+}
+
+ul li a {
+    text-decoration: none;
+    color: white;
+    letter-spacing: 1px;
+
+    
+}
+
+/* Container */
+
+.container {
+    padding-top: 6%;
+    /* border: 1px solid red; */
+    width: 70%;
+    margin: 0% auto
+
+    /* background-color: rgb(233, 247, 250) */
+}
+
+h2 {
+    margin-bottom: 3%;
+    /* border: 1px solid red; */
+    /* text-align: center; */
+}
+
+.container p {
+    margin: 2% 0;
+    /* border: 1px solid  red; */
+    font-size: 1.1rem;
+    padding: 2%;
+}
+
+
+/* TABLE */
+
+.table-container {
+    text-align: center;
+}
+
+table {
+    /* width: 90%; */
+    text-align: center;
+    margin: 2.5% auto;
+    border: 1px solid white;
+}
+
+table tr { transition: all .3s ease-in-out; }
+
+table tr:hover { transform: scale(1.04) }
+
+
+table tr:nth-child(even){ background-color: #f2f2f2;}
+
+th, td {
+    padding: 2%;
+    overflow: hidden;
+    width: 12%;
+    /* border-bottom: 1px solid white; */
 }
