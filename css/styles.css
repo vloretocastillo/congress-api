@@ -9,6 +9,9 @@
 body {
     background-color: rgb(236, 233, 233);
     /* border: 1px solid red; */
+    font-family: 'Barlow', sans-serif;
+    font-weight: 300;
+
 }
 /* NAVBAR */
 
@@ -18,9 +21,11 @@ body {
     position: relative;
     height: 40vh;
     background-image: url('../assets/imgs/banner.jpg');
-    background-position: center; 
+    background-position: bottom; 
     background-repeat: no-repeat;
     background-size: cover;
+    background-attachment: fixed;
+
 }
 
 nav {
@@ -75,25 +80,22 @@ ul li a:hover, .dropdown button:hover {
 
 /* Container */
 
-.container {
-    padding: 6% 0;
+.main-container {
+    padding: 6% 15%;
     /* border: 1px solid red; */
     width: 100%;
-    margin: 0% auto
+    margin: 0% auto;
 }
 
 h2 {
     /* border: 1px solid red; */
     text-align: center;
+    margin-bottom: 2%;
 }
 
 .titles-accordion {
-    /* color: red; */
     font-size: 1.4rem;
-    /* border: 1px solid red; */
-    /* display: block; */
-    /* width: 100%; */
-    /* text-align: center; */
+    
 }
 
 
@@ -102,26 +104,21 @@ h2 {
     text-decoration: none;
 }
 
-.container p {
+.main-container p {
     margin: 2% 0;
     font-size: 1.1rem;
     /* border: 1px solid red; */
+    /* text-indent: 5%;; */
 }
 
 
 /* TABLE */
 
-/* .table-container {
-    border: 1px solid red;
-} */
-
-table {
-    text-align: center;
-    /* margin: 2.5% auto; */
-    /* border: 1px solid red; */
-}
+table { text-align: center; }
 
 th, td { width: 12%}
+
+
 
 /* footer */
 
