@@ -1,6 +1,8 @@
+// ********************************************************* CURRENT HTML PAGE
+
 const currentPage = window.location.pathname.split('/').pop()
 
-// ********************************************************* READ TOGGLE BUTTON
+// ********************************************************* READ TOGGLE BUTTON - HOME PAGE
 
 const changeText = (thisButton) => {
     const isTextVisible = !$("#toggleText").is(':visible')
@@ -83,35 +85,24 @@ const generateTableRow = (member) => {
     return tr
 }
 
+const tableGenerator = (rowGenerator, membersObjectsArray, table) => {
+    for (let i = 0; i < membersObjectsArray.length; i++) { table.appendChild( rowGenerator(membersObjectsArray[i]) ) }
+}
+
 
 // ********************************************************* SENATE TABLE
 
 if (currentPage == "senate.html") {
-
     const members = dataSenate['results'][0]['members'] 
-    
-    const tableGenerator = (rowGenerator, membersObjectsArray) => {
-        const table = document.getElementById("senate-data")
-        for (let i = 0; i < membersObjectsArray.length; i++) { table.appendChild( rowGenerator(membersObjectsArray[i]) ) }
-    }
-    
     const senateMembers = createMembersArray(members)
-    tableGenerator(generateTableRow, senateMembers)
+    tableGenerator(generateTableRow, senateMembers, document.getElementById("senate-data"))
 
 }
 
 // ********************************************************* HOUSE TABLE
 
 else if (currentPage == "representatives.html") {
-
     const members = dataHouse['results'][0]['members'] 
-
-    const tableGenerator = (rowGenerator, membersObjectsArray) => {
-        const table = document.getElementById("representatives-data")
-        for (let i = 0; i < membersObjectsArray.length; i++) { table.appendChild( rowGenerator(membersObjectsArray[i]) ) }
-    }
-
     const houseMembers = createMembersArray(members)
-    tableGenerator(generateTableRow, houseMembers)
-
+    tableGenerator(generateTableRow, houseMembers, document.getElementById("representatives-data"))
 }
