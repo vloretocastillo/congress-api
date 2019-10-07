@@ -1,44 +1,26 @@
 // ********************************************************* CURRENT HTML PAGE
 
-const currentPage = window.location.pathname.split('/').pop()
+const currentPage = window.location.pathname.split('/').pop();
 
 // ********************************************************* READ TOGGLE BUTTON - HOME PAGE
 
 const changeText = (thisButton) => {
-    const isTextVisible = !$("#toggleText").is(':visible')
-    const readToggleButton = document.getElementById(thisButton.id)
+    const isTextVisible = !$("#toggleText").is(':visible');
+    const readToggleButton = document.getElementById(thisButton.id);
     isTextVisible ? readToggleButton.innerHTML = 'Read Less' : readToggleButton.innerHTML = 'Read More'
 }
 
-
-// ********************************************************* FILTER BY PARTY FUNCTION
-
-const filter = (event) => {
-    const valuesParties = [...document.getElementsByName('party')].reduce((obj, item) => {
-        obj[item.value] = item.checked
-        return obj
-      }, {})
-
-    const tableRows = document.getElementsByTagName('tr')
-
-    for (let i=1; i < tableRows.length; i++) {
-        valuesParties[tableRows[i].getAttribute('data-party')] ? tableRows[i].classList.remove('hide-me') : tableRows[i].classList.add('hide-me')
-    }
-}
-
-
-// ********************************************************* ASSIGN FILTER TO CHECKBOXES
+// ********************************************************* ADD EVENT LISTENERS  
 
 const checkboxesParties = document.getElementsByName('party') || null
 if (checkboxesParties) {
-    for (let i=0; i < checkboxesParties.length; i++) { checkboxesParties[i].addEventListener('click', () => filter(event) ) }
+    for (let i=0; i < checkboxesParties.length; i++) { checkboxesParties[i].addEventListener('change', () => filter() ) }
 }
 
 // ********************************************************* GENERATE MEMBER TABLES FUNCTIONS 
 
-
 const createMemberObj = (member) => {
-    let memberObject = {}
+    const memberObject = {}
     memberObject.first_name = member.first_name
     memberObject.middle_name = member.middle_name
     memberObject.last_name = member.last_name
@@ -49,13 +31,8 @@ const createMemberObj = (member) => {
     return memberObject
 }
 
-const createMembersArray = (members) => {
-    const objectsArray = []
-    for (let i = 0; i < members.length; i++) {  objectsArray.push(createMemberObj(members[i])) }
-    return objectsArray
-}
 
-const generateTableRow = (member) => {
+const renderRow = (member) => {
 
     const tr = document.createElement('tr')
     let full_name, party_votes, seniority, state, party
@@ -75,9 +52,8 @@ const generateTableRow = (member) => {
     party = document.createElement('td')  
     party.innerHTML = member.party 
     tr.appendChild(party)
-    tr.setAttribute('data-party', member.party)
+    tr.setAttribute('data-party', member.party )
 
-    
     party_votes = document.createElement('td')
     party_votes.innerHTML =  member.votes_with_party_pct
     tr.appendChild(party_votes)
@@ -85,24 +61,21 @@ const generateTableRow = (member) => {
     return tr
 }
 
-const tableGenerator = (rowGenerator, membersObjectsArray, table) => {
-    for (let i = 0; i < membersObjectsArray.length; i++) { table.appendChild( rowGenerator(membersObjectsArray[i]) ) }
+const renderTable = (members) => {
+    const tableBody = document.getElementById('table-body')
+    for (let i = 0; i < members.length; i++) { tableBody.appendChild( renderRow(members[i]) ) }
 }
 
 
-// ********************************************************* SENATE TABLE
+// ********************************************************* FILTER 
 
-if (currentPage == "senate.html") {
-    const members = dataSenate['results'][0]['members'] 
-    const senateMembers = createMembersArray(members)
-    tableGenerator(generateTableRow, senateMembers, document.getElementById("senate-data"))
-
+const filter = () => {
+    let members = currentPage == "senate.html" ? dataSenate['results'][0]['members'] : currentPage == "representatives.html" ? dataHouse['results'][0]['members'] : null
+    const checkboxesValuesParties = [...document.querySelectorAll('input[type=checkbox]:checked')].map(el => el.value)
+    members = members.filter(el => checkboxesValuesParties.indexOf(el.party) != -1)
+    members = members.map(el => createMemberObj(el))
+    document.getElementById('table-body').innerHTML = ''
+    renderTable( members )
 }
 
-// ********************************************************* HOUSE TABLE
-
-else if (currentPage == "representatives.html") {
-    const members = dataHouse['results'][0]['members'] 
-    const houseMembers = createMembersArray(members)
-    tableGenerator(generateTableRow, houseMembers, document.getElementById("representatives-data"))
-}
+filter();
