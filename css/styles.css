@@ -20,7 +20,7 @@ body {
 .nav-wrapper {
     position: relative;
     height: 40vh;
-    background-image: url('../assets/imgs/banner.jpg');
+    background-image: url('../assets/imgs/banner.png');
     background-position: bottom; 
     background-repeat: no-repeat;
     background-size: cover;
@@ -112,6 +112,10 @@ h2 {
 }
 
 
+.read-more-button {
+    margin: 2% 0;
+}
+
 /* TABLE */
 
 table { text-align: center; }
@@ -125,4 +129,40 @@ th, td { width: 12%}
 footer {
     height: 30vh;
     background-color: grey;
+}
+
+
+
+
+
+/* FILTERs */
+
+.filter-section {
+    border: 1px solid rgb(197, 190, 190);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    padding: 3%;
+    margin: 7% auto 5%;
+    border-radius: 18px;
+    width: 80%;
+}
+
+/* .filter-section h4 {
+    width: 100%;
+    border: 1px solid red;
+    position: relative;
+    top: -1%;
+
+} */
+
+.filter-section div {
+    /* border: 1px solid red; */
+    position: relative;
+    top: 5px;
+}
+
+
+.hide-me {
+    display: none;
 }
