@@ -12,7 +12,6 @@ const changeText = (thisButton) => {
 
 // ********************************************************* 
 
-
 const states = [
     { name: 'ALABAMA', abbreviation: 'AL'},
     { name: 'ALASKA', abbreviation: 'AK'},
@@ -87,7 +86,7 @@ for(let i = 0; i < states.length; i++) {
 // ********************************************************* ADD EVENT LISTENERS  
 
 const checkboxesParties = document.getElementsByName('party') || null
-// const select = document.getElementById('state') || null
+
 if (checkboxesParties) {
     for (let i=0; i < checkboxesParties.length; i++) { checkboxesParties[i].addEventListener('change', () => filter() ) }
 }
@@ -110,40 +109,37 @@ const createMemberObj = (member) => {
 }
 
 
-const renderRow = (member) => {
-
-    const tr = document.createElement('tr')
-    let full_name, party_votes, seniority, state, party
-    
-    full_name = document.createElement('td') 
-    full_name.innerHTML = `${ member.first_name} ${member.middle_name || ""} ${member.last_name}`
-    tr.appendChild(full_name)
-    
-    state = document.createElement('td')
-    state.innerHTML = member.state 
-    tr.appendChild(state)
-    // tr.setAttribute('data-state', member.state )
-
-    
-    seniority = document.createElement('td')
-    seniority.innerHTML =  member.seniority 
-    tr.appendChild(seniority)
-    
-    party = document.createElement('td')  
-    party.innerHTML = member.party 
-    tr.appendChild(party)
-    // tr.setAttribute('data-party', member.party )
-
-    party_votes = document.createElement('td')
-    party_votes.innerHTML =  member.votes_with_party_pct
-    tr.appendChild(party_votes)
-    
-    return tr
-}
-
 const renderTable = (members) => {
     const tableBody = document.getElementById('table-body')
-    for (let i = 0; i < members.length; i++) { tableBody.appendChild( renderRow(members[i]) ) }
+
+    for (let i = 0; i < members.length; i++) { 
+
+        const tr = document.createElement('tr')
+        
+        let full_name = document.createElement('td') 
+        full_name.innerHTML = `${ members[i].first_name} ${members[i].middle_name || ""} ${members[i].last_name}`
+        tr.appendChild(full_name)
+        
+        let state = document.createElement('td')
+        state.innerHTML = members[i].state 
+        tr.appendChild(state)
+
+        let seniority = document.createElement('td')
+        seniority.innerHTML =  members[i].seniority 
+        tr.appendChild(seniority)
+        
+        let party = document.createElement('td')  
+        party.innerHTML = members[i].party 
+        tr.appendChild(party)
+        // tr.setAttribute('data-party', member.party )
+
+        let party_votes = document.createElement('td')
+        party_votes.innerHTML =  members[i].votes_with_party_pct
+        tr.appendChild(party_votes)
+
+        tableBody.appendChild( tr ) 
+
+    }
 }
 
 
