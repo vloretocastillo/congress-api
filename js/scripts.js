@@ -5,9 +5,9 @@ const currentPage = window.location.pathname.split('/').pop();
 // ********************************************************* READ TOGGLE BUTTON - HOME PAGE
 
 const changeText = (thisButton) => {
-    const isTextVisible = !$("#toggleText").is(':visible');
+    const isTextVisible = window.getComputedStyle(document.querySelector( '#toggleText' ) );
     const readToggleButton = document.getElementById(thisButton.id);
-    isTextVisible ? readToggleButton.innerHTML = 'Read Less' : readToggleButton.innerHTML = 'Read More'
+    isTextVisible == 'block' ? readToggleButton.innerHTML = 'Read More' : readToggleButton.innerHTML = 'Read Less'
 }
 
 // ********************************************************* 
@@ -76,11 +76,15 @@ const states = [
 
 let stateSelect = document.getElementById('state');
 
-for(let i = 0; i < states.length; i++) {
-    var option = document.createElement("option");
-    option.innerHTML = states[i].name;
-    option.value = states[i].abbreviation;
-    stateSelect.appendChild(option);
+if (stateSelect) {
+    stateSelect.addEventListener('change', () => filter() ) 
+
+    for(let i = 0; i < states.length; i++) {
+        var option = document.createElement("option");
+        option.innerHTML = states[i].name;
+        option.value = states[i].abbreviation;
+        stateSelect.appendChild(option);
+    }
 }
 
 // ********************************************************* ADD EVENT LISTENERS  
@@ -90,9 +94,9 @@ const checkboxesParties = document.getElementsByName('party') || null
 if (checkboxesParties) {
     for (let i=0; i < checkboxesParties.length; i++) { checkboxesParties[i].addEventListener('change', () => filter() ) }
 }
-if (stateSelect) {
-    stateSelect.addEventListener('change', () => filter() ) 
-}
+// if (stateSelect) {
+//     stateSelect.addEventListener('change', () => filter() ) 
+// }
 
 // ********************************************************* GENERATE MEMBER TABLES FUNCTIONS 
 
@@ -151,9 +155,7 @@ const filter = () => {
 
     const stateSelect = [...document.getElementById('state')].filter(el => el.selected)[0].value
 
-    if (stateSelect != "all") {
-        members = members.filter(el => el.state == stateSelect)
-    }
+    if (stateSelect != "all") { members = members.filter(el => el.state == stateSelect) }
 
     members = members.filter(el => checkboxesValuesParties.indexOf(el.party) != -1)
     members = members.map(el => createMemberObj(el))
@@ -163,5 +165,4 @@ const filter = () => {
 }
 
 
-
-filter();
+if (currentPage == "senate.html" || currentPage == "representatives.html") filter();

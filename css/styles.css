@@ -146,6 +146,23 @@ footer {
     margin: 7% auto 5%;
     border-radius: 18px;
     width: 80%;
+    position: relative;
+}
+
+.filter-section:first-of-type::before {
+    content: "FILTER BY PARTY";
+}
+
+.filter-section:nth-of-type(2)::before {
+    content: "FILTER BY STATE";
+}
+
+.filter-section::before {
+    /* content: "FILTER"; */
+    position: absolute;
+    top: -18%;
+    background-color: rgb(236, 233, 233);
+    padding: 0 5%;
 }
 
 /* .filter-section h4 {
