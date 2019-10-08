@@ -1,8 +1,8 @@
-// ********************************************************* CURRENT HTML PAGE
+// ********************************************************* GET CURRENT HTML PAGE
 
 const currentPage = window.location.pathname.split('/').pop();
 
-// ********************************************************* READ TOGGLE BUTTON - HOME PAGE
+// ********************************************************* READ TOGGLE BUTTON CALL BACK - HOME PAGE
 
 const changeText = (thisButton) => {
     const isTextVisible = window.getComputedStyle(document.querySelector( '#toggleText' ) );
@@ -10,7 +10,7 @@ const changeText = (thisButton) => {
     isTextVisible == 'block' ? readToggleButton.innerHTML = 'Read More' : readToggleButton.innerHTML = 'Read Less'
 }
 
-// ********************************************************* 
+// ********************************************************* APPEND STATES SELECT OPTIONS & ADD EVENT LISTENER: FILTER
 
 const states = [
     { name: 'ALABAMA', abbreviation: 'AL'},
@@ -87,18 +87,16 @@ if (stateSelect) {
     }
 }
 
-// ********************************************************* ADD EVENT LISTENERS  
+// ********************************************************* ADD EVENT LISTENER TO PARTY CHECKBOXES: FILTER
 
 const checkboxesParties = document.getElementsByName('party') || null
 
 if (checkboxesParties) {
     for (let i=0; i < checkboxesParties.length; i++) { checkboxesParties[i].addEventListener('change', () => filter() ) }
 }
-// if (stateSelect) {
-//     stateSelect.addEventListener('change', () => filter() ) 
-// }
 
-// ********************************************************* GENERATE MEMBER TABLES FUNCTIONS 
+
+// ********************************************************* GENERATE MEMBER TABLES  
 
 const createMemberObj = (member) => {
     const memberObject = {}
@@ -135,7 +133,6 @@ const renderTable = (members) => {
         let party = document.createElement('td')  
         party.innerHTML = members[i].party 
         tr.appendChild(party)
-        // tr.setAttribute('data-party', member.party )
 
         let party_votes = document.createElement('td')
         party_votes.innerHTML =  members[i].votes_with_party_pct
@@ -146,22 +143,25 @@ const renderTable = (members) => {
     }
 }
 
-
-// ********************************************************* FILTER 
+// ********************************************************* FILTER FUNCTION
 
 const filter = () => {
     let members = currentPage == "senate.html" ? dataSenate['results'][0]['members'] : currentPage == "representatives.html" ? dataHouse['results'][0]['members'] : null
     const checkboxesValuesParties = [...document.querySelectorAll('input[type=checkbox]:checked')].map(el => el.value)
-
     const stateSelect = [...document.getElementById('state')].filter(el => el.selected)[0].value
-
     if (stateSelect != "all") { members = members.filter(el => el.state == stateSelect) }
-
     members = members.filter(el => checkboxesValuesParties.indexOf(el.party) != -1)
     members = members.map(el => createMemberObj(el))
-
     document.getElementById('table-body').innerHTML = ''
     renderTable( members )
+
+    const tableBodyRows = document.getElementById('table-body').rows.length
+    console.log(tableBodyRows)
+    if (tableBodyRows == 0) {
+        document.getElementById('zero-results-box').classList.remove('hide-me')
+    } else{
+        document.getElementById('zero-results-box').classList.add('hide-me')
+    }
 }
 
 

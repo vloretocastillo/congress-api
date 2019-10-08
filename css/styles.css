@@ -13,6 +13,7 @@ body {
     font-weight: 300;
 
 }
+
 /* NAVBAR */
 
 .current { color: rgb(135, 145, 145);  } 
@@ -120,7 +121,10 @@ h2 {
 
 table { text-align: center; }
 
-th, td { width: 12%}
+th, td { 
+    width: 12%;
+    overflow: hidden;
+}
 
 
 
@@ -136,6 +140,12 @@ footer {
 
 
 /* FILTERs */
+
+.zero-results-box {
+    border: 1px solid rgb(197, 190, 190);
+    margin: 5% auto;
+    text-align: center;
+}
 
 .filter-section {
     border: 1px solid rgb(197, 190, 190);
