@@ -20715,62 +20715,9 @@ var dataHouse = {
     ]
 }
 
-// const members = dataHouse['results'][0]['members'] 
 
-// const createMemberObj = (member) => {
-//   let memberObject = {}
-//   memberObject.first_name = member.first_name
-//   memberObject.middle_name = member.middle_name
-//   memberObject.last_name = member.last_name
-//   memberObject.state = member.state
-//   memberObject.seniority = member.seniority
-//   memberObject.party = member.party
-//   memberObject.votes_with_party_pct = member.votes_with_party_pct + "%"
-//   return memberObject
-// }
+houseDemocratMembers = dataHouse['results'][0]['members'].filter(el => el.party == 'D');
 
-// const createHouseMembersArray = (members) => {
-//   const houseMembers = []
-//   for (let i = 0; i < members.length; i++) {  houseMembers.push(createMemberObj(members[i])) }
-//   return houseMembers
-// }
+houseRepublicanMembers = dataHouse['results'][0]['members'].filter(el => el.party == 'R');
 
-// const generateTableRow = (member) => {
-//   const tr = document.createElement('tr')
-//   let full_name, party_votes, seniority, state, party
-
-//   full_name = document.createElement('td') 
-//   full_name.innerHTML = `${ member.first_name} ${member.middle_name || ""} ${member.last_name}`
-//   tr.appendChild(full_name)
-
-//   state = document.createElement('td')
-//   state.innerHTML = member.state 
-//   tr.appendChild(state)
-
-//   seniority = document.createElement('td')
-//   seniority.innerHTML =  member.seniority 
-//   tr.appendChild(seniority)
-
-//   party = document.createElement('td')  
-//   party.innerHTML = member.party 
-//   tr.appendChild(party)
-
-//   party_votes = document.createElement('td')
-//   party_votes.innerHTML =  member.votes_with_party_pct
-//   tr.appendChild(party_votes)
-
-//   return tr
-// }
-
-// const tableGenerator = (rowGenerator, membersObjectsArray) => {
-//   const table = document.getElementById("representatives-data")
-//   for (let i = 0; i < membersObjectsArray.length; i++) { table.appendChild( rowGenerator(membersObjectsArray[i]) ) }
-// }
-
-
-
-
-
-
-// const houseMembers = createHouseMembersArray(members)
-// tableGenerator(generateTableRow, houseMembers)
+houseIndependentMembers = dataHouse['results'][0]['members'].filter(el => el.party == 'I');

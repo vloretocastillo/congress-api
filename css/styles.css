@@ -88,10 +88,10 @@ ul li a:hover, .dropdown button:hover {
     margin: 0% auto;
 }
 
-h2 {
+h2, h1 {
     /* border: 1px solid red; */
     text-align: center;
-    margin-bottom: 2%;
+    margin-bottom: 3%;
 }
 
 .titles-accordion {
@@ -147,6 +147,18 @@ footer {
     text-align: center;
 }
 
+.filter-attendance {
+    border: 1px solid rgb(197, 190, 190);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    padding: 3%;
+    margin: 7% auto 5%;
+    border-radius: 18px;
+    width: 80%;
+    position: relative;
+}
+
 .filter-section {
     border: 1px solid rgb(197, 190, 190);
     display: flex;
@@ -168,23 +180,15 @@ footer {
 }
 
 .filter-section::before {
-    /* content: "FILTER"; */
     position: absolute;
     top: -18%;
     background-color: rgb(236, 233, 233);
     padding: 0 5%;
 }
 
-/* .filter-section h4 {
-    width: 100%;
-    border: 1px solid red;
-    position: relative;
-    top: -1%;
 
-} */
 
 .filter-section div {
-    /* border: 1px solid red; */
     position: relative;
     top: 5px;
 }

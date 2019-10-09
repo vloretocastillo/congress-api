@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
 
-    <title>Senate Loyalty</title>
+    <title>Attendance</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="css/styles.css">
     <link href="https://fonts.googleapis.com/css?family=Barlow:300,400&display=swap" rel="stylesheet">
@@ -29,6 +29,10 @@
                     </div>
                     </div>
                 </li>
+
+                <li><a href="attendance.html" >Attendance</a></li>
+
+                <li><a href="party-loyalty.html" >Party Loyalty</a></li>
             </ul>
         </nav>  
             
@@ -36,10 +40,55 @@
 
     <div class="main-container">
 
+        <h1>Attendance</h1>
+
+        <section class="filter-attendance">
+            <select  name="" id="party-attendance">
+                <option value="S" selected=true>Senate</option>
+                <option value="H">House</option>
+            </select>
+        </section>  
+
+        <h2>Senate at a Glance</h2>
+
+        <div class="table-container"> 
+            <table id="table" class="table table-borderless">
+                <thead>
+                <tr>
+                    <th scope="col">Party</th>
+                    <th scope="col">No. of Reps</th>
+                    <th scope="col">% Voted by the Party</th> 
+                </tr>
+                </thead>
+                <tbody id="table-body">
+
+                    <!-- <tr>
+                        <td>Democrats</td>
+
+                    </tr>
+                    <tr>
+                        <td>Republicans</td>
+                    </tr>
+                    <tr>
+                        <td>Independents</td>
+                    </tr>
+                    <tr>
+                        <td>Total</td>
+                    </tr> -->
+    
+                </tbody>
+            </table>
+    
+            <div class="hide-me zero-results-box" id="zero-results-box">
+                <p>No results matched your search criteria</p>
+            </div>
+        </div>  
         
     </div>
 
     <script src="js/pro-congress-113-senate.js"></script>
+    <script src="js/pro-congress-113-house.js"></script>
+
     <!-- <script src="js/scripts.js"></script> -->
     <script src="js/statistics.js"></script>
 

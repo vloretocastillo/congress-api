@@ -91,7 +91,7 @@ if (stateSelect) {
 
 const checkboxesParties = document.getElementsByName('party') || null
 
-if (checkboxesParties) {
+if (checkboxesParties) { 
     for (let i=0; i < checkboxesParties.length; i++) { checkboxesParties[i].addEventListener('change', () => filter() ) }
 }
 
@@ -115,7 +115,6 @@ const renderTable = (members) => {
     const tableBody = document.getElementById('table-body')
 
     for (let i = 0; i < members.length; i++) { 
-
         const tr = document.createElement('tr')
         
         let full_name = document.createElement('td') 
@@ -139,7 +138,6 @@ const renderTable = (members) => {
         tr.appendChild(party_votes)
 
         tableBody.appendChild( tr ) 
-
     }
 }
 
@@ -148,21 +146,20 @@ const renderTable = (members) => {
 const filter = () => {
     let members = currentPage == "senate.html" ? dataSenate['results'][0]['members'] : currentPage == "representatives.html" ? dataHouse['results'][0]['members'] : null
     const checkboxesValuesParties = [...document.querySelectorAll('input[type=checkbox]:checked')].map(el => el.value)
-    const stateSelect = [...document.getElementById('state')].filter(el => el.selected)[0].value
-    if (stateSelect != "all") { members = members.filter(el => el.state == stateSelect) }
+    const selectedState  = [...document.getElementById('state')].filter(el => el.selected)[0].value 
+    // selectedState.options[selectedState.selectedIndex].value
+    if (selectedState != "all") { members = members.filter(el => el.state == selectedState) }
     members = members.filter(el => checkboxesValuesParties.indexOf(el.party) != -1)
     members = members.map(el => createMemberObj(el))
     document.getElementById('table-body').innerHTML = ''
+
     renderTable( members )
 
     const tableBodyRows = document.getElementById('table-body').rows.length
-    console.log(tableBodyRows)
-    if (tableBodyRows == 0) {
-        document.getElementById('zero-results-box').classList.remove('hide-me')
-    } else{
-        document.getElementById('zero-results-box').classList.add('hide-me')
-    }
+    tableBodyRows == 0 ? document.getElementById('zero-results-box').classList.remove('hide-me') : document.getElementById('zero-results-box').classList.add('hide-me')
 }
 
-
 if (currentPage == "senate.html" || currentPage == "representatives.html") filter();
+
+
+
