@@ -30,9 +30,9 @@
                     </div>
                 </li>
 
-                <li><a href="attendance.html" >Attendance</a></li>
+                <li><a href="attendance.html" >Statistics</a></li>
 
-                <li><a href="party-loyalty.html" >Party Loyalty</a></li>
+                <!-- <li><a href="party-loyalty.html" >Party Loyalty</a></li> -->
             </ul>
         </nav>  
             
@@ -40,14 +40,14 @@
 
     <div class="main-container">
 
-        <h1>Attendance</h1>
+        <h1>Statistics</h1>
 
-        <section class="filter-attendance">
+        <section class="filter-chamber">
             <select  name="" id="party-attendance">
                 <option value="S" selected=true>Senate</option>
                 <option value="H">House</option>
             </select>
-        </section>  
+        </section>   
 
         <h2>Senate at a Glance</h2>
 
@@ -67,7 +67,20 @@
         </div>  
 
         <hr>
+
+        <section class="filter-statistic-type">
+            <div>
+                <input type="radio" name="statistic" value="attendance" checked=true>Attendance
+            </div>
+            <div>
+                <input type="radio" name="statistic" value="loyalty"> Loyalty
+            </div>
+        </section> 
         
+        <!-- <h2>Attendance</h2> -->
+
+        <section id="attendance-tables">
+
         <h2>Least Engaged</h2>
 
         <div class="table-container"> 
@@ -87,22 +100,62 @@
 
         <hr>
 
-        <h2>Most Engaged</h2>
+        
+            <h2>Most Engaged</h2>
 
-        <div class="table-container"> 
-            <table id="" class="table table-borderless">
-                <thead>
-                <tr>
-                    <th scope="col">Name</th>
-                    <th scope="col">No. of Missed Votes</th>
-                    <th scope="col">% Missed</th> 
-                </tr>
-                </thead>
-                <tbody id="most-engaged">
-                </tbody>
-            </table>
-            
+            <div class="table-container"> 
+                <table id="" class="table table-borderless">
+                    <thead>
+                    <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">No. of Missed Votes</th>
+                        <th scope="col">% Missed</th> 
+                    </tr>
+                    </thead>
+                    <tbody id="most-engaged">
+                    </tbody>
+                </table>
         </div>  
+
+        </section>
+
+        <section id="loyalty-tables">
+
+            <h2>Least Loyal</h2>
+
+            <div class="table-container"> 
+                <table id="" class="table table-borderless">
+                    <thead>
+                    <tr>
+                        <th scope="col">Party</th>
+                        <th scope="col">No. of Party Votes</th>
+                        <th scope="col">% Party Votes</th> 
+                    </tr>
+                    </thead>
+                    <tbody id="least-loyal">
+                    </tbody>
+                </table>   
+            </div>  
+        
+            <hr>
+
+            <h2>Most Loyal</h2>
+
+            <div class="table-container"> 
+                <table id="" class="table table-borderless">
+                    <thead>
+                    <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">No. of Party Votes</th>
+                        <th scope="col">% Party Votes</th> 
+                    </tr>
+                    </thead>
+                    <tbody id="most-loyal">
+                    </tbody>
+                </table>
+            </div>  
+
+        </section>
         
     </div>
 

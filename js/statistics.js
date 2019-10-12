@@ -27,8 +27,9 @@ const senateStatistics = {
         },
     },
     leastEngaged : senateLeastEngaged,
-    mostEngaged : senateMostEngaged
-
+    mostEngaged : senateMostEngaged,
+    leastLoyal : senateLeastLoyal,
+    mostLoyal : senateMostLoyal,
 }
 
 
@@ -60,7 +61,10 @@ const houseStatistics = {
 
     },
     leastEngaged : houseLeastEngaged,
-    mostEngaged : houseMostEngaged    
+    mostEngaged : houseMostEngaged,
+    leastLoyal : houseLeastLoyal,
+    mostLoyal : houseMostLoyal,
+
 }
 
 
@@ -71,7 +75,7 @@ const houseStatistics = {
 
 const renderMainTable = (statistics) => {
     const tableBody = document.getElementById('table-body')
-    tableBody.innerHTML = ''
+    // tableBody.innerHTML = ''
 
     let keys = ['Democrats', 'Republicans', 'Independents', 'Total']
  
@@ -92,9 +96,8 @@ const renderMainTable = (statistics) => {
     }
 }
 
-const renderEngagementTable = (members, id) => {
+const renderStatisticsTable = (members, id) => {
     const tableBody = document.getElementById(id)
-    tableBody.innerHTML = ''
     for (let i=0; i < members.length; i++) {
         let tr = document.createElement('tr')
         for (let j=0; j < members[i].length; j++) {
@@ -108,21 +111,48 @@ const renderEngagementTable = (members, id) => {
 
 
 
-// ******************************************************* GET SELECT ELEMENT AND ADD EVEN LISTENER
+// ******************************************************* ADD EVEN LISTENER
 
 const selectElement = document.getElementById('party-attendance')
 selectElement.addEventListener('change', () => filter() ) 
 
+const radioElements = document.getElementsByName('statistic')
+for (let i=0; i < radioElements.length; i++) { radioElements[i].addEventListener('click', () => filter()) }
+
+
+
+
 // ******************************************************* FILTER 
 
 const filter = () => {
-    const selectedOption = selectElement.options[selectElement.selectedIndex].value
-    let statistics = selectedOption == "S" ? senateStatistics : houseStatistics
+
+    const selectedChamber = selectElement.options[selectElement.selectedIndex].value
+    let statistics = selectedChamber == "S" ? senateStatistics : houseStatistics
     const h2 = document.getElementsByTagName('h2')[0]
-    selectedOption == "S" ? h2.innerHTML = "Senate at a Glance" : h2.innerHTML = 'House at a Glance'
+    selectedChamber == "S" ? h2.innerHTML = "Senate at a Glance" : h2.innerHTML = 'House at a Glance'
+
+    const tableBodies = document.getElementsByTagName('tbody')
+    for (let i=0; i < tableBodies.length; i++) { tableBodies[i].innerHTML = '' }
+
+
     renderMainTable(statistics.basicStats)
-    renderEngagementTable(statistics.mostEngaged, 'most-engaged')
-    renderEngagementTable(statistics.leastEngaged, 'least-engaged')
+
+    const selectedTypeStatistic = document.querySelector('input[type=radio]:checked').value
+    const attendanceTables = document.getElementById('attendance-tables')
+    const loyaltyTables = document.getElementById('loyalty-tables')
+
+
+    if (selectedTypeStatistic == 'attendance') {
+        loyaltyTables.classList.add('hide-me')
+        attendanceTables.classList.remove('hide-me')
+        renderStatisticsTable(statistics.mostEngaged, 'most-engaged')
+        renderStatisticsTable(statistics.leastEngaged, 'least-engaged')
+    } else {
+        attendanceTables.classList.add('hide-me')
+        loyaltyTables.classList.remove('hide-me')
+        renderStatisticsTable(statistics.mostLoyal, 'most-loyal')
+        renderStatisticsTable(statistics.leastLoyal, 'least-loyal')
+    }
 
 }
 

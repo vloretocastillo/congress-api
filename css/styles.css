@@ -2,13 +2,11 @@
     margin: 0;
     padding: 0;
     color: rgb(85, 84, 84);
-    /* background-color: rgb(237, 241, 232); */
 }
 
 
 body {
     background-color: rgb(236, 233, 233);
-    /* border: 1px solid red; */
     font-family: 'Barlow', sans-serif;
     font-weight: 300;
 
@@ -83,13 +81,11 @@ ul li a:hover, .dropdown button:hover {
 
 .main-container {
     padding: 6% 15%;
-    /* border: 1px solid red; */
     width: 100%;
     margin: 0% auto;
 }
 
 h2, h1 {
-    /* border: 1px solid red; */
     text-align: center;
     margin-bottom: 3%;
 }
@@ -108,8 +104,6 @@ h2, h1 {
 .main-container p {
     margin: 2% 0;
     font-size: 1.1rem;
-    /* border: 1px solid red; */
-    /* text-indent: 5%;; */
 }
 
 
@@ -147,7 +141,7 @@ footer {
     text-align: center;
 }
 
-.filter-attendance {
+.filter-chamber {
     border: 1px solid rgb(197, 190, 190);
     display: flex;
     flex-wrap: wrap;
@@ -157,6 +151,35 @@ footer {
     border-radius: 18px;
     width: 80%;
     position: relative;
+}
+
+.filter-chamber::before {
+    content: "FILTER BY CHAMBER";
+    position: absolute;
+    top: -18%;
+    background-color: rgb(236, 233, 233);
+    padding: 0 5%;
+}
+
+.filter-statistic-type {
+    border: 1px solid rgb(197, 190, 190);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    padding: 3%;
+    margin: 7% auto 5%;
+    border-radius: 18px;
+    width: 80%;
+    position: relative;
+
+}
+
+.filter-statistic-type::before {
+    content: "FILTER BY TYPE OF STATISTIC";
+    position: absolute;
+    top: -18%;
+    background-color: rgb(236, 233, 233);
+    padding: 0 5%;
 }
 
 .filter-section {

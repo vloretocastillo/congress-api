@@ -20720,13 +20720,9 @@ const houseMembers = dataHouse['results'][0]['members']
 
 
 const houseDemocratMembers = houseMembers.filter(el => el.party == 'D');
-
 const houseRepublicanMembers = houseMembers.filter(el => el.party == 'R');
-
 const houseIndependentMembers = houseMembers.filter(el => el.party == 'I');
-
 const houseMembersVotes = houseMembers.map((el) => [el.first_name + " " + (el.middle_name || ''), el.last_name, el.missed_votes, el.missed_votes_pct]).sort(function(a, b){return b[2]-a[2]})
-
 
 //
 
@@ -20734,3 +20730,7 @@ let tenPercentHouse = (10 * houseMembers.length) / 100
 const houseMembersEngagement = houseMembers.map((el) => [el.first_name + " " + (el.middle_name || '') + ' ' + el.last_name, el.missed_votes, el.missed_votes_pct]).sort(function(a, b){return b[1]-a[1]})
 const houseLeastEngaged = houseMembersEngagement.slice(0,tenPercentHouse)
 const houseMostEngaged = houseMembersEngagement.reverse().slice(0,tenPercentHouse)
+
+const houseMembersLoyalty = houseMembers.map((el) => [el.first_name + " " + (el.middle_name || '') + ' ' + el.last_name, el.total_votes, el.votes_with_party_pct]).sort(function(a, b){return b[1]-a[1]})
+const houseLeastLoyal = houseMembersLoyalty.slice(0,tenPercent)
+const houseMostLoyal = houseMembersLoyalty.reverse().slice(0,tenPercent)
