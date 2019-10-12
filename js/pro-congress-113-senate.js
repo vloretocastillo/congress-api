@@ -4845,8 +4845,20 @@ var dataSenate = {
     ]
  }
 
- senateDemocratMembers = dataSenate['results'][0]['members'].filter(el => el.party == 'D');
+ const senateMembers = dataSenate['results'][0]['members']
 
- senateRepublicanMembers = dataSenate['results'][0]['members'].filter(el => el.party == 'R');
+ const senateDemocratMembers = senateMembers.filter(el => el.party == 'D');
 
- senateIndependentMembers = dataSenate['results'][0]['members'].filter(el => el.party == 'I');
+ const senateRepublicanMembers = senateMembers.filter(el => el.party == 'R');
+
+ const senateIndependentMembers = senateMembers.filter(el => el.party == 'I');
+
+
+// 
+
+
+
+let tenPercent = (10 * senateMembers.length) / 100
+const senateMembersEngagement = senateMembers.map((el) => [el.first_name + " " + (el.middle_name || '') + ' ' + el.last_name, el.missed_votes, el.missed_votes_pct]).sort(function(a, b){return b[1]-a[1]})
+const senateLeastEngaged = senateMembersEngagement.slice(0,tenPercent)
+const senateMostEngaged = senateMembersEngagement.reverse().slice(0,tenPercent)

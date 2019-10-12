@@ -20715,9 +20715,22 @@ var dataHouse = {
     ]
 }
 
+const houseMembers = dataHouse['results'][0]['members']
 
-houseDemocratMembers = dataHouse['results'][0]['members'].filter(el => el.party == 'D');
 
-houseRepublicanMembers = dataHouse['results'][0]['members'].filter(el => el.party == 'R');
 
-houseIndependentMembers = dataHouse['results'][0]['members'].filter(el => el.party == 'I');
+const houseDemocratMembers = houseMembers.filter(el => el.party == 'D');
+
+const houseRepublicanMembers = houseMembers.filter(el => el.party == 'R');
+
+const houseIndependentMembers = houseMembers.filter(el => el.party == 'I');
+
+const houseMembersVotes = houseMembers.map((el) => [el.first_name + " " + (el.middle_name || ''), el.last_name, el.missed_votes, el.missed_votes_pct]).sort(function(a, b){return b[2]-a[2]})
+
+
+//
+
+let tenPercentHouse = (10 * houseMembers.length) / 100
+const houseMembersEngagement = houseMembers.map((el) => [el.first_name + " " + (el.middle_name || '') + ' ' + el.last_name, el.missed_votes, el.missed_votes_pct]).sort(function(a, b){return b[1]-a[1]})
+const houseLeastEngaged = houseMembersEngagement.slice(0,tenPercentHouse)
+const houseMostEngaged = houseMembersEngagement.reverse().slice(0,tenPercentHouse)
