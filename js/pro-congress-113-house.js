@@ -20732,5 +20732,5 @@ const houseLeastEngaged = houseMembersEngagement.slice(0,tenPercentHouse)
 const houseMostEngaged = houseMembersEngagement.reverse().slice(0,tenPercentHouse)
 
 const houseMembersLoyalty = houseMembers.map((el) => [el.first_name + " " + (el.middle_name || '') + ' ' + el.last_name, el.total_votes, el.votes_with_party_pct]).sort(function(a, b){return b[1]-a[1]})
-const houseLeastLoyal = houseMembersLoyalty.slice(0,tenPercent)
-const houseMostLoyal = houseMembersLoyalty.reverse().slice(0,tenPercent)
+const houseLeastLoyal = houseMembersLoyalty.slice(0,tenPercentHouse)
+const houseMostLoyal = houseMembersLoyalty.reverse().slice(0,tenPercentHouse)
