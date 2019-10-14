@@ -8,8 +8,7 @@ for (let i=0; i < radioElements.length; i++) { radioElements[i].addEventListener
 
 // *******************************************************  GET DATA ASYNC FUNCTION
 
-
-async function getData(chamber){
+const getData =  async (chamber) => {
     
      const response = await fetch(`https://api.propublica.org/congress/v1/113/${chamber}/members.json`, {
         method: 'GET',
@@ -62,6 +61,9 @@ const renderStatisticsTable = (members, id) => {
 // ******************************************************* FILTER 
 
 const filter = () => {
+
+    const loader = document.getElementById('loader')
+    loader.classList.remove('hide-me')
 
     const selectedChamber = selectElement.options[selectElement.selectedIndex].value
 
@@ -132,7 +134,14 @@ const filter = () => {
                 renderStatisticsTable(mostLoyal, 'most-loyal')
                 renderStatisticsTable(leastLoyal, 'least-loyal')
             }
-    })
+        })
+        .then (() => {
+            // console.log(data)
+            loader.classList.add('hide-me')
+        })
+    
+
+    
 
 }
 

@@ -1,4 +1,6 @@
 
+
+
 // *******************************************************STATISTICS OBJECTS
 
 
@@ -125,6 +127,8 @@ for (let i=0; i < radioElements.length; i++) { radioElements[i].addEventListener
 // ******************************************************* FILTER 
 
 const filter = () => {
+
+    
 
     const selectedChamber = selectElement.options[selectElement.selectedIndex].value
     let statistics = selectedChamber == "S" ? senateStatistics : houseStatistics
