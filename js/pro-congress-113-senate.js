@@ -4846,17 +4846,31 @@ var dataSenate = {
  }
 
  const senateMembers = dataSenate['results'][0]['members']
- const senateDemocratMembers = senateMembers.filter(el => el.party == 'D');
- const senateRepublicanMembers = senateMembers.filter(el => el.party == 'R');
- const senateIndependentMembers = senateMembers.filter(el => el.party == 'I');
 
-// 
 
-let tenPercent = (10 * senateMembers.length) / 100
-const senateMembersEngagement = senateMembers.map((el) => [el.first_name + " " + (el.middle_name || '') + ' ' + el.last_name, el.missed_votes, el.missed_votes_pct]).sort(function(a, b){return b[1]-a[1]})
-const senateLeastEngaged = senateMembersEngagement.slice(0,tenPercent)
-const senateMostEngaged = senateMembersEngagement.reverse().slice(0,tenPercent)
 
-const senateMembersLoyalty = senateMembers.map((el) => [el.first_name + " " + (el.middle_name || '') + ' ' + el.last_name, el.total_votes, el.votes_with_party_pct]).sort(function(a, b){return b[1]-a[1]})
-const senateLeastLoyal = senateMembersLoyalty.slice(0,tenPercent)
-const senateMostLoyal = senateMembersLoyalty.reverse().slice(0,tenPercent)
+// getData('senate')
+//   .then(senateMembers => {
+
+  const senateDemocratMembers = senateMembers.filter(el => el.party == 'D');
+  const senateRepublicanMembers = senateMembers.filter(el => el.party == 'R');
+  const senateIndependentMembers = senateMembers.filter(el => el.party == 'I');
+
+  let tenPercent = (10 * senateMembers.length) / 100
+  const senateMembersEngagement = senateMembers.map((el) => [el.first_name + " " + (el.middle_name || '') + ' ' + el.last_name, el.missed_votes, el.missed_votes_pct]).sort(function(a, b){return b[1]-a[1]})
+  const senateLeastEngaged = senateMembersEngagement.slice(0,tenPercent)
+  const senateMostEngaged = senateMembersEngagement.reverse().slice(0,tenPercent)
+
+  const senateMembersLoyalty = senateMembers.map((el) => {
+    let votesWithParty = Math.floor(el.total_votes * el.votes_with_party_pct / 100)
+    return [el.first_name + " " + (el.middle_name || '') + ' ' + el.last_name, votesWithParty, el.votes_with_party_pct]
+  }).sort(function(a, b){return a[2]-b[2]})
+
+
+  const senateLeastLoyal = senateMembersLoyalty.slice(0,tenPercent)
+  const senateMostLoyal = senateMembersLoyalty.reverse().slice(0,tenPercent)
+
+// })
+
+
+
