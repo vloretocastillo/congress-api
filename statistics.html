@@ -14,9 +14,9 @@
 
     <div class="nav-wrapper">
         <div class="dark-cover"></div>
-        <nav>
+        <nav id="menu">
             
-            <ul>
+            <ul >
                 <li><a href="index.html" >Home</a></li>
 
                 <li class="dropdown-li">
@@ -165,6 +165,24 @@
     <!-- <script src="js/pro-congress-113-senate.js"></script> -->
     <!-- <script src="js/pro-congress-113-house.js"></script> -->
     <!-- <script src="js/statistics.js"></script> -->
+
+    <script>
+        window.onscroll = () => { 
+            makeMenuStickyOnScroll() 
+        };
+
+        let menu = document.getElementById('menu')
+        let sticky = menu.offsetTop;
+        
+        let makeMenuStickyOnScroll = () => { 
+            
+
+            console.log(menu, sticky)
+            console.log(window.scrollY >= menu.offsetTop)
+            window.scrollY >= sticky ? menu.classList.add("sticky") : menu.classList.remove("sticky"); 
+        }
+    
+    </script>
 
 
 

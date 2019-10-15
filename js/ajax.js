@@ -136,13 +136,8 @@ const filter = () => {
             }
         })
         .then (() => {
-            // console.log(data)
             loader.classList.add('hide-me')
         })
-    
-
-    
-
 }
 
 // ******************************************************* CALL FILTER
