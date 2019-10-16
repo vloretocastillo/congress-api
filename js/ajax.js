@@ -4,17 +4,25 @@ const currentPage = window.location.pathname.split('/').pop();
 
 // ******************************************************* STICKY NAVBAR ON SCROLL
 
-window.onscroll = () => { 
-    makeMenuStickyOnScroll() 
-};
-
+window.onscroll = () => {  makeMenuStickyOnScroll() };
 let menu = document.getElementById('menu')
 let sticky = menu.offsetTop;
+let makeMenuStickyOnScroll = () => { window.scrollY >= sticky ? menu.classList.add("sticky") : menu.classList.remove("sticky");  }
 
-let makeMenuStickyOnScroll = () => { 
-    window.scrollY >= sticky ? menu.classList.add("sticky") : menu.classList.remove("sticky"); 
-}
+// ********************************************************* FETCH DATA FUNCTION
 
+const getData =  async (chamber) => {
+    loader.classList.remove('hide-me')
+    const response = await fetch(`https://api.propublica.org/congress/v1/113/${chamber}/members.json`, {
+       method: 'GET',
+       headers: {
+         'X-API-Key': 'VW1RX1TgbPr1hp9uHtgJW2Nr01QcNzQAm8CqrDGl',
+       }
+     });
+   const json = await response.json();
+   const members = await json['results'][0]['members']
+   return members
+};
 
 // ********************************************************* INDEX PAGE
 
@@ -28,28 +36,13 @@ if (currentPage == 'index.html') {
 
 // ********************************************************* FETCH DATA
 
-
 const pagesThatFetchData = [ 'senate.html', 'representatives.html', 'statistics.html' ]
+
 if ( pagesThatFetchData.indexOf(currentPage) != -1) {
 
     const loader = document.getElementById('loader')
-    // loader.classList.remove('hide-me')
 
-
-    const getData =  async (chamber) => {
-        loader.classList.remove('hide-me')
-        const response = await fetch(`https://api.propublica.org/congress/v1/113/${chamber}/members.json`, {
-           method: 'GET',
-           headers: {
-             'X-API-Key': 'VW1RX1TgbPr1hp9uHtgJW2Nr01QcNzQAm8CqrDGl',
-           }
-         });
-       const json = await response.json();
-       const members = await json['results'][0]['members']
-       return members
-   };
-
-
+   // ********************************************************* STATISTICS.HTML
 
     if (currentPage == 'statistics.html') {
 
@@ -85,11 +78,7 @@ if ( pagesThatFetchData.indexOf(currentPage) != -1) {
             }
         }
 
-        const filter = () => {
-
-            // const loader = document.getElementById('loader')
-            // loader.classList.remove('hide-me')
-        
+        const filter = () => {       
             const selectedChamber = selectElement.options[selectElement.selectedIndex].value
         
             let chamber = selectedChamber == "S" ? 'senate' : 'house'
@@ -171,10 +160,10 @@ if ( pagesThatFetchData.indexOf(currentPage) != -1) {
         const radioElements = document.getElementsByName('statistic')
         for (let i=0; i < radioElements.length; i++) { radioElements[i].addEventListener('click', () => filter()) }
 
-
         filter();
-
    } 
+
+   // ********************************************************* SENATE.HTML || REPRESENTATIVES.HTML
    
    else if (currentPage == 'senate.html' || currentPage == 'representatives.html') {
         const states = [
@@ -292,7 +281,6 @@ if ( pagesThatFetchData.indexOf(currentPage) != -1) {
         }
 
         const filter = () => {
-            
 
             const checkboxesValuesParties = [...document.querySelectorAll('input[type=checkbox]:checked')].map(el => el.value)
             const selectedState  = [...document.getElementById('state')].filter(el => el.selected)[0].value 
