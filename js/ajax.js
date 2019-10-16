@@ -32,8 +32,12 @@ if (currentPage == 'index.html') {
 const pagesThatFetchData = [ 'senate.html', 'representatives.html', 'statistics.html' ]
 if ( pagesThatFetchData.indexOf(currentPage) != -1) {
 
+    const loader = document.getElementById('loader')
+    // loader.classList.remove('hide-me')
+
 
     const getData =  async (chamber) => {
+        loader.classList.remove('hide-me')
         const response = await fetch(`https://api.propublica.org/congress/v1/113/${chamber}/members.json`, {
            method: 'GET',
            headers: {
@@ -83,8 +87,8 @@ if ( pagesThatFetchData.indexOf(currentPage) != -1) {
 
         const filter = () => {
 
-            const loader = document.getElementById('loader')
-            loader.classList.remove('hide-me')
+            // const loader = document.getElementById('loader')
+            // loader.classList.remove('hide-me')
         
             const selectedChamber = selectElement.options[selectElement.selectedIndex].value
         
@@ -288,6 +292,8 @@ if ( pagesThatFetchData.indexOf(currentPage) != -1) {
         }
 
         const filter = () => {
+            
+
             const checkboxesValuesParties = [...document.querySelectorAll('input[type=checkbox]:checked')].map(el => el.value)
             const selectedState  = [...document.getElementById('state')].filter(el => el.selected)[0].value 
             
@@ -302,6 +308,8 @@ if ( pagesThatFetchData.indexOf(currentPage) != -1) {
                     renderTable( members )
                     const tableBodyRows = document.getElementById('table-body').rows.length
                     tableBodyRows == 0 ? document.getElementById('zero-results-box').classList.remove('hide-me') : document.getElementById('zero-results-box').classList.add('hide-me')
+                }).then (() => {
+                    loader.classList.add('hide-me')
                 })
         }
 
