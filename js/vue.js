@@ -58,7 +58,6 @@
                     leastLoyal : [],
                     mostLoyal : []
                 }
-
             },
 
             methods : {
@@ -97,16 +96,10 @@
                 },
 
                 makeMenuStickyOnScroll : function () {
-                    
-                    // let menu = document.getElementById('menu')
-                    let sticky = this.menuOffSetTop
-                    // console.log(window.scrollY, sticky)
-                    window.scrollY >= sticky ? document.getElementById('menu').classList.add("sticky") : document.getElementById('menu').classList.remove("sticky") 
+                    window.scrollY >= this.menuOffSetTop ? document.getElementById('menu').classList.add("sticky") : document.getElementById('menu').classList.remove("sticky") 
                 },
 
-                updateCurrentPage : function() {
-                    this.currentPage = window.location.pathname.split('/').pop()
-                },
+                updateCurrentPage : function() { this.currentPage = window.location.pathname.split('/').pop() },
 
                 updateData : function(event) {
                     this.toggleLoader('reveal')
@@ -147,6 +140,8 @@
                 
                 window.addEventListener('scroll', () => ( this.makeMenuStickyOnScroll() ) );
                 this.menuOffSetTop = document.getElementById('menu').offsetTop
+
+
                 this.updateCurrentPage()
                 if ( this.currentPage != 'index.html') this.updateData()
             }
