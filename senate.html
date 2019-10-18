@@ -58,19 +58,26 @@
       </section>
       
       <div class="table-container"> 
-        <table id="table" class="table table-borderless">
-          <thead>
-            <tr>
-                <th scope="col">Full Name</th>
-                <th scope="col">State</th>
-                <th scope="col">Seniority</th>
-                <th scope="col">Party</th>
-                <th scope="col">Votes Percentage</th>
-            </tr>
-          </thead>
-          <tbody id="table-body">
-          </tbody>
-        </table>
+        <!-- <table id="table" class="table table-borderless"> -->
+          <div class="tablehead">
+            <ul class="tablerow">
+                <li scope="col">Full Name</li>
+                <li scope="col">State</li>
+                <li scope="col">Seniority</li>
+                <li scope="col">Party</li>
+                <li scope="col">Votes Percentage</li>
+            </ul>
+          </div>
+          <div class="tablebody" id='tablebody'>
+              <ul class="tablerow" v-for='member in members'>
+                <li>{{ member.first_name + member.middle_name || '' + member.last_name }}</li>
+                <li>{{ member.state }}</li>
+                <li>{{ member.seniority }}</li>
+                <li>{{ member.party }}</li>
+                <li>{{ member.votes_with_party_pct }}</li>
+              </ul>
+          </div>
+        <!-- </table> -->
         <div class="hide-me zero-results-box" id="zero-results-box">
           <p>No results matched your search criteria</p>
         </div>
@@ -79,7 +86,7 @@
 
     <footer></footer>
 
-    <!-- <div id="loader" class="lds-circle"><div></div></div> -->
+    <div v-if="loader" id="loader" class="lds-circle"><div></div></div>
   </div>
   <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
   <script src="js/vue.js"></script>
