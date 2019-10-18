@@ -2,12 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-
-    <title>Attendance</title>
+    <title>Statistics</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="css/styles.css">
     <link href="https://fonts.googleapis.com/css?family=Barlow:300,400&display=swap" rel="stylesheet">
-
 </head>
 
 <body>
@@ -15,10 +13,8 @@
     <div class="nav-wrapper">
         <div class="dark-cover"></div>
         <nav id="menu">
-            
             <ul >
                 <li><a href="index.html" >Home</a></li>
-
                 <li class="dropdown-li">
                     <div class="dropdown">
                     <button class="btn dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -30,85 +26,75 @@
                     </div>
                     </div>
                 </li>
-
                 <li><a href="statistics.html" class="current">Statistics</a></li>
-
             </ul>
         </nav>  
-            
     </div>
 
     <div class="main-container" >
-
         <h1>Statistics</h1>
-
         <section class="filter filter-chamber">
             <select  name="chamber" id="party-attendance" v-on:change="updateData($event)">
                 <option value="senate" selected=true>Senate</option>
                 <option value="house">House</option>
             </select>
         </section>   
-
         <h2>{{ chamber[0].toUpperCase() + chamber.slice(1) }} at a Glance</h2>
-
         <div class="table-container"> 
-            
-                <div class="tablehead">
-                    <ul class="tablerow">
-                        <li scope="col">Party </li>
-                        <li scope="col">No. of Reps</li>
-                        <li scope="col">% Voted by the Party</li> 
-                    </ul>
-                </div>
-            
-                <div class="tablebody"> 
-                    <ul class="tablerow">
-                        <li>
-                            Democrats
-                        </li>
-                        <li>
-                            {{ democrats.length }}
-                        </li>
-                        <li>
-                            {{ percentageVotedDemocrats }}
-                        </li>
-                        
-                    </ul>
-                    <ul class="tablerow">
-                        <li>
-                            Republicans
-                        </li>
-                        <li>
-                            {{ republicans.length }}
-                        </li> 
-                        <li>
-                            {{ percentageVotedRepublicans }}
-                        </li>
-                    </ul>
-                    <ul class="tablerow">
-                        <li>
-                            Independents
-                        </li>
-                        <li>
-                            {{ independents.length }}
-                        </li> 
-                        <li>
-                            {{ percentageVotedIndependents }}
-                        </li>
-                    </ul>
-                    <ul class="tablerow">
-                        <li>
-                            Total
-                        </li>
-                        <li>
-                            {{ members.length }}
-                        </li> 
-                        <li>
-                            {{ totalPercentage }}
-                        </li>
+            <div class="tablehead">
+                <ul class="tablerow">
+                    <li scope="col">Party </li>
+                    <li scope="col">No. of Reps</li>
+                    <li scope="col">% Voted by the Party</li> 
+                </ul>
+            </div>
+            <div class="tablebody"> 
+                <ul class="tablerow">
+                    <li>
+                        Democrats
+                    </li>
+                    <li>
+                        {{ democrats.length }}
+                    </li>
+                    <li>
+                        {{ percentageVotedDemocrats }}
+                    </li>   
+                </ul>
+                <ul class="tablerow">
+                    <li>
+                        Republicans
+                    </li>
+                    <li>
+                        {{ republicans.length }}
+                    </li> 
+                    <li>
+                        {{ percentageVotedRepublicans }}
+                    </li>
+                </ul>
+                <ul class="tablerow">
+                    <li>
+                        Independents
+                    </li>
+                    <li>
+                        {{ independents.length }}
+                    </li> 
+                    <li>
+                        {{ percentageVotedIndependents }}
+                    </li>
+                </ul>
+                <ul class="tablerow">
+                    <li>
+                        Total
+                    </li>
+                    <li>
+                        {{ members.length }}
+                    </li> 
+                    <li>
+                        {{ totalPercentage }}
+                    </li>
 
-                    </ul>
-                </div>   
+                </ul>
+            </div>   
         </div>  
 
         <hr>
@@ -123,11 +109,8 @@
         </section> 
 
         <div v-if='statistic == "attendance"' >
-
         <section id="attendance-tables">
-
             <h2>Least Engaged</h2>
-
             <div class="table-container"> 
                 <div class="tablehead">
                     <ul class="tablerow">
@@ -151,43 +134,36 @@
                     </ul>
                 </div>                
             </div>  
-
             <hr>
-
             <h2>Most Engaged</h2>
-
             <div class="table-container"> 
-                    <div class="tablehead">
-                        <ul class="tablerow">
-                            <li>Name</li>
-                            <li>No. of Missed Votes</li>
-                            <li>% Missed</li> 
-                        </ul>
-                    </div>
-    
-                    <div class="tablebody">
-                        <ul class="tablerow" v-for='member in engagement.mostEngaged'>
-                            <li>
-                               {{ member[0] }}
-                            </li>
-                            <li>
-                                {{ member[1] }}
-                            </li>
-                            <li>
-                                {{ member[2] }}
-                            </li>
-                        </ul>
-                    </div>                
-                </div>  
-
+                <div class="tablehead">
+                    <ul class="tablerow">
+                        <li>Name</li>
+                        <li>No. of Missed Votes</li>
+                        <li>% Missed</li> 
+                    </ul>
+                </div>
+                <div class="tablebody">
+                    <ul class="tablerow" v-for='member in engagement.mostEngaged'>
+                        <li>
+                            {{ member[0] }}
+                        </li>
+                        <li>
+                            {{ member[1] }}
+                        </li>
+                        <li>
+                            {{ member[2] }}
+                        </li>
+                    </ul>
+                </div>                
+            </div>  
         </section>
         </div>
 
         <div v-else>
         <section id="loyalty-tables">
-
             <h2>Least Loyal</h2>
-
             <div class="table-container"> 
                 <div class="tablehead">
                     <ul class="tablerow">
@@ -210,11 +186,8 @@
                     </ul>
                 </div>  
             </div>  
-        
             <hr>
-
             <h2>Most Loyal</h2>
-
             <div class="table-container"> 
                 <div class="tablehead">
                     <ul class="tablerow">
@@ -237,13 +210,10 @@
                     </ul>
                 </div>  
             </div>  
-
         </section>
         </div>
     </div>
-
-  
-
+    
     <footer></footer>
 
     <div v-if="loader" id="loader" class="lds-circle"><div></div></div>

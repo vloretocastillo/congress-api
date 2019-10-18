@@ -1,40 +1,41 @@
 // ********************************************************* GET CURRENT HTML PAGE
 
-const currentPage = window.location.pathname.split('/').pop();
+// const currentPage = window.location.pathname.split('/').pop();
 
 // ******************************************************* STICKY NAVBAR ON SCROLL
 
-window.onscroll = () => {  makeMenuStickyOnScroll() };
-let menu = document.getElementById('menu')
-let sticky = menu.offsetTop;
-let makeMenuStickyOnScroll = () => { window.scrollY >= sticky ? menu.classList.add("sticky") : menu.classList.remove("sticky");  }
+// window.onscroll = () => {  makeMenuStickyOnScroll() };
+// let menu = document.getElementById('menu')
+// let sticky = menu.offsetTop;
+// let makeMenuStickyOnScroll = () => { window.scrollY >= sticky ? menu.classList.add("sticky") : menu.classList.remove("sticky");  }
 
 
 // ********************************************************* INDEX PAGE
 
-if (currentPage == 'index.html') {
-    const changeText = (thisButton) => {
-        const isTextVisible = window.getComputedStyle(document.querySelector( '#toggleText' ) );
-        const readToggleButton = document.getElementById(thisButton.id);
-        isTextVisible == 'block' ? readToggleButton.innerHTML = 'Read More' : readToggleButton.innerHTML = 'Read Less'
-    }
-}
+// if (currentPage == 'index.html') {
+//     const changeText = (thisButton) => {
+//         const isTextVisible = window.getComputedStyle(document.querySelector( '#toggleText' ) );
+//         const readToggleButton = document.getElementById(thisButton.id);
+//         isTextVisible == 'block' ? readToggleButton.innerHTML = 'Read More' : readToggleButton.innerHTML = 'Read Less'
+//     }
+// }
 
 // ********************************************************* FETCH DATA
 
-const pagesThatFetchData = [ 'senate.html', 'representatives.html', 'statistics.html' ]
+// const pagesThatFetchData = [ 'senate.html', 'representatives.html', 'statistics.html' ]
 
-if ( pagesThatFetchData.indexOf(currentPage) != -1) {
+// if ( pagesThatFetchData.indexOf(currentPage) != -1) {
 
    // ********************************************************* STATISTICS.HTML
 
-    if (currentPage == 'statistics.html') {
+    // if (currentPage == 'statistics.html') {
 
         // ********************************************************* VUE instance
 
         let app = new Vue({
             el: '#root',
             data : {
+                currentPage: '',
                 chamber: 'senate',
                 statistic: 'attendance',
                 loader : true,
@@ -88,6 +89,16 @@ if ( pagesThatFetchData.indexOf(currentPage) != -1) {
 
                 toggleLoader : function (status) { status == 'reveal' ? this.loader = true : this.loader = false  },
 
+                changeText : function (event) {
+                    const isTextVisible = window.getComputedStyle( document.querySelector( '#toggleText' ) ).display;
+                    const readToggleButton = document.getElementById(event.target.id);
+                    isTextVisible == 'block' ? readToggleButton.innerHTML = 'Read More' : readToggleButton.innerHTML = 'Read Less'
+                },
+
+                updateCurrentPage : function() {
+                    this.currentPage = window.location.pathname.split('/').pop()
+                },
+
                 updateData : function(event) {
                     this.toggleLoader('reveal')
                     if (event) {
@@ -124,160 +135,161 @@ if ( pagesThatFetchData.indexOf(currentPage) != -1) {
             },
 
             created : function () {
-                this.updateData()
+                this.updateCurrentPage()
+                if ( this.currentPage != 'index.html') this.updateData()
             }
 
         })
 
 
-    }
+    // }
       
      
 
 
    // ********************************************************* SENATE.HTML || REPRESENTATIVES.HTML
    
-   else if (currentPage == 'senate.html' || currentPage == 'representatives.html') {
-        const states = [
-            { name: 'ALABAMA', abbreviation: 'AL'},
-            { name: 'ALASKA', abbreviation: 'AK'},
-            { name: 'AMERICAN SAMOA', abbreviation: 'AS'},
-            { name: 'ARIZONA', abbreviation: 'AZ'},
-            { name: 'ARKANSAS', abbreviation: 'AR'},
-            { name: 'CALIFORNIA', abbreviation: 'CA'},
-            { name: 'COLORADO', abbreviation: 'CO'},
-            { name: 'CONNECTICUT', abbreviation: 'CT'},
-            { name: 'DELAWARE', abbreviation: 'DE'},
-            { name: 'DISTRICT OF COLUMBIA', abbreviation: 'DC'},
-            { name: 'FEDERATED STATES OF MICRONESIA', abbreviation: 'FM'},
-            { name: 'FLORIDA', abbreviation: 'FL'},
-            { name: 'GEORGIA', abbreviation: 'GA'},
-            { name: 'GUAM', abbreviation: 'GU'},
-            { name: 'HAWAII', abbreviation: 'HI'},
-            { name: 'IDAHO', abbreviation: 'ID'},
-            { name: 'ILLINOIS', abbreviation: 'IL'},
-            { name: 'INDIANA', abbreviation: 'IN'},
-            { name: 'IOWA', abbreviation: 'IA'},
-            { name: 'KANSAS', abbreviation: 'KS'},
-            { name: 'KENTUCKY', abbreviation: 'KY'},
-            { name: 'LOUISIANA', abbreviation: 'LA'},
-            { name: 'MAINE', abbreviation: 'ME'},
-            { name: 'MARSHALL ISLANDS', abbreviation: 'MH'},
-            { name: 'MARYLAND', abbreviation: 'MD'},
-            { name: 'MASSACHUSETTS', abbreviation: 'MA'},
-            { name: 'MICHIGAN', abbreviation: 'MI'},
-            { name: 'MINNESOTA', abbreviation: 'MN'},
-            { name: 'MISSISSIPPI', abbreviation: 'MS'},
-            { name: 'MISSOURI', abbreviation: 'MO'},
-            { name: 'MONTANA', abbreviation: 'MT'},
-            { name: 'NEBRASKA', abbreviation: 'NE'},
-            { name: 'NEVADA', abbreviation: 'NV'},
-            { name: 'NEW HAMPSHIRE', abbreviation: 'NH'},
-            { name: 'NEW JERSEY', abbreviation: 'NJ'},
-            { name: 'NEW MEXICO', abbreviation: 'NM'},
-            { name: 'NEW YORK', abbreviation: 'NY'},
-            { name: 'NORTH CAROLINA', abbreviation: 'NC'},
-            { name: 'NORTH DAKOTA', abbreviation: 'ND'},
-            { name: 'NORTHERN MARIANA ISLANDS', abbreviation: 'MP'},
-            { name: 'OHIO', abbreviation: 'OH'},
-            { name: 'OKLAHOMA', abbreviation: 'OK'},
-            { name: 'OREGON', abbreviation: 'OR'},
-            { name: 'PALAU', abbreviation: 'PW'},
-            { name: 'PENNSYLVANIA', abbreviation: 'PA'},
-            { name: 'PUERTO RICO', abbreviation: 'PR'},
-            { name: 'RHODE ISLAND', abbreviation: 'RI'},
-            { name: 'SOUTH CAROLINA', abbreviation: 'SC'},
-            { name: 'SOUTH DAKOTA', abbreviation: 'SD'},
-            { name: 'TENNESSEE', abbreviation: 'TN'},
-            { name: 'TEXAS', abbreviation: 'TX'},
-            { name: 'UTAH', abbreviation: 'UT'},
-            { name: 'VERMONT', abbreviation: 'VT'},
-            { name: 'VIRGIN ISLANDS', abbreviation: 'VI'},
-            { name: 'VIRGINIA', abbreviation: 'VA'},
-            { name: 'WASHINGTON', abbreviation: 'WA'},
-            { name: 'WEST VIRGINIA', abbreviation: 'WV'},
-            { name: 'WISCONSIN', abbreviation: 'WI'},
-            { name: 'WYOMING', abbreviation: 'WY' }
-        ];
+//    else if (currentPage == 'senate.html' || currentPage == 'representatives.html') {
+//         const states = [
+//             { name: 'ALABAMA', abbreviation: 'AL'},
+//             { name: 'ALASKA', abbreviation: 'AK'},
+//             { name: 'AMERICAN SAMOA', abbreviation: 'AS'},
+//             { name: 'ARIZONA', abbreviation: 'AZ'},
+//             { name: 'ARKANSAS', abbreviation: 'AR'},
+//             { name: 'CALIFORNIA', abbreviation: 'CA'},
+//             { name: 'COLORADO', abbreviation: 'CO'},
+//             { name: 'CONNECTICUT', abbreviation: 'CT'},
+//             { name: 'DELAWARE', abbreviation: 'DE'},
+//             { name: 'DISTRICT OF COLUMBIA', abbreviation: 'DC'},
+//             { name: 'FEDERATED STATES OF MICRONESIA', abbreviation: 'FM'},
+//             { name: 'FLORIDA', abbreviation: 'FL'},
+//             { name: 'GEORGIA', abbreviation: 'GA'},
+//             { name: 'GUAM', abbreviation: 'GU'},
+//             { name: 'HAWAII', abbreviation: 'HI'},
+//             { name: 'IDAHO', abbreviation: 'ID'},
+//             { name: 'ILLINOIS', abbreviation: 'IL'},
+//             { name: 'INDIANA', abbreviation: 'IN'},
+//             { name: 'IOWA', abbreviation: 'IA'},
+//             { name: 'KANSAS', abbreviation: 'KS'},
+//             { name: 'KENTUCKY', abbreviation: 'KY'},
+//             { name: 'LOUISIANA', abbreviation: 'LA'},
+//             { name: 'MAINE', abbreviation: 'ME'},
+//             { name: 'MARSHALL ISLANDS', abbreviation: 'MH'},
+//             { name: 'MARYLAND', abbreviation: 'MD'},
+//             { name: 'MASSACHUSETTS', abbreviation: 'MA'},
+//             { name: 'MICHIGAN', abbreviation: 'MI'},
+//             { name: 'MINNESOTA', abbreviation: 'MN'},
+//             { name: 'MISSISSIPPI', abbreviation: 'MS'},
+//             { name: 'MISSOURI', abbreviation: 'MO'},
+//             { name: 'MONTANA', abbreviation: 'MT'},
+//             { name: 'NEBRASKA', abbreviation: 'NE'},
+//             { name: 'NEVADA', abbreviation: 'NV'},
+//             { name: 'NEW HAMPSHIRE', abbreviation: 'NH'},
+//             { name: 'NEW JERSEY', abbreviation: 'NJ'},
+//             { name: 'NEW MEXICO', abbreviation: 'NM'},
+//             { name: 'NEW YORK', abbreviation: 'NY'},
+//             { name: 'NORTH CAROLINA', abbreviation: 'NC'},
+//             { name: 'NORTH DAKOTA', abbreviation: 'ND'},
+//             { name: 'NORTHERN MARIANA ISLANDS', abbreviation: 'MP'},
+//             { name: 'OHIO', abbreviation: 'OH'},
+//             { name: 'OKLAHOMA', abbreviation: 'OK'},
+//             { name: 'OREGON', abbreviation: 'OR'},
+//             { name: 'PALAU', abbreviation: 'PW'},
+//             { name: 'PENNSYLVANIA', abbreviation: 'PA'},
+//             { name: 'PUERTO RICO', abbreviation: 'PR'},
+//             { name: 'RHODE ISLAND', abbreviation: 'RI'},
+//             { name: 'SOUTH CAROLINA', abbreviation: 'SC'},
+//             { name: 'SOUTH DAKOTA', abbreviation: 'SD'},
+//             { name: 'TENNESSEE', abbreviation: 'TN'},
+//             { name: 'TEXAS', abbreviation: 'TX'},
+//             { name: 'UTAH', abbreviation: 'UT'},
+//             { name: 'VERMONT', abbreviation: 'VT'},
+//             { name: 'VIRGIN ISLANDS', abbreviation: 'VI'},
+//             { name: 'VIRGINIA', abbreviation: 'VA'},
+//             { name: 'WASHINGTON', abbreviation: 'WA'},
+//             { name: 'WEST VIRGINIA', abbreviation: 'WV'},
+//             { name: 'WISCONSIN', abbreviation: 'WI'},
+//             { name: 'WYOMING', abbreviation: 'WY' }
+//         ];
 
-        let stateSelect = document.getElementById('state');
-        stateSelect.addEventListener('change', () => filter() ) 
-        for(let i = 0; i < states.length; i++) {
-            var option = document.createElement("option");
-            option.innerHTML = states[i].name;
-            option.value = states[i].abbreviation;
-            stateSelect.appendChild(option);
-        }
-        const checkboxesParties = document.getElementsByName('party') || null
-        for (let i=0; i < checkboxesParties.length; i++) { checkboxesParties[i].addEventListener('change', () => filter() ) } 
+//         let stateSelect = document.getElementById('state');
+//         stateSelect.addEventListener('change', () => filter() ) 
+//         for(let i = 0; i < states.length; i++) {
+//             var option = document.createElement("option");
+//             option.innerHTML = states[i].name;
+//             option.value = states[i].abbreviation;
+//             stateSelect.appendChild(option);
+//         }
+//         const checkboxesParties = document.getElementsByName('party') || null
+//         for (let i=0; i < checkboxesParties.length; i++) { checkboxesParties[i].addEventListener('change', () => filter() ) } 
         
-        const createMemberObj = (member) => {
-            const memberObject = {}
-            memberObject.first_name = member.first_name
-            memberObject.middle_name = member.middle_name
-            memberObject.last_name = member.last_name
-            memberObject.state = member.state
-            memberObject.seniority = member.seniority
-            memberObject.party = member.party
-            memberObject.votes_with_party_pct = member.votes_with_party_pct + "%"
-            return memberObject
-        }
+//         const createMemberObj = (member) => {
+//             const memberObject = {}
+//             memberObject.first_name = member.first_name
+//             memberObject.middle_name = member.middle_name
+//             memberObject.last_name = member.last_name
+//             memberObject.state = member.state
+//             memberObject.seniority = member.seniority
+//             memberObject.party = member.party
+//             memberObject.votes_with_party_pct = member.votes_with_party_pct + "%"
+//             return memberObject
+//         }
 
-        const renderTable = (members) => {
-            const tableBody = document.getElementById('table-body')
-            for (let i = 0; i < members.length; i++) { 
-                const tr = document.createElement('tr')
+//         const renderTable = (members) => {
+//             const tableBody = document.getElementById('table-body')
+//             for (let i = 0; i < members.length; i++) { 
+//                 const tr = document.createElement('tr')
                 
-                let full_name = document.createElement('td') 
-                full_name.innerHTML = `${ members[i].first_name} ${members[i].middle_name || ""} ${members[i].last_name}`
-                tr.appendChild(full_name)
+//                 let full_name = document.createElement('td') 
+//                 full_name.innerHTML = `${ members[i].first_name} ${members[i].middle_name || ""} ${members[i].last_name}`
+//                 tr.appendChild(full_name)
                 
-                let state = document.createElement('td')
-                state.innerHTML = members[i].state 
-                tr.appendChild(state)
+//                 let state = document.createElement('td')
+//                 state.innerHTML = members[i].state 
+//                 tr.appendChild(state)
         
-                let seniority = document.createElement('td')
-                seniority.innerHTML =  members[i].seniority 
-                tr.appendChild(seniority)
+//                 let seniority = document.createElement('td')
+//                 seniority.innerHTML =  members[i].seniority 
+//                 tr.appendChild(seniority)
                 
-                let party = document.createElement('td')  
-                party.innerHTML = members[i].party 
-                tr.appendChild(party)
+//                 let party = document.createElement('td')  
+//                 party.innerHTML = members[i].party 
+//                 tr.appendChild(party)
         
-                let party_votes = document.createElement('td')
-                party_votes.innerHTML =  members[i].votes_with_party_pct
-                tr.appendChild(party_votes)
+//                 let party_votes = document.createElement('td')
+//                 party_votes.innerHTML =  members[i].votes_with_party_pct
+//                 tr.appendChild(party_votes)
         
-                tableBody.appendChild( tr ) 
-            }
-        }
+//                 tableBody.appendChild( tr ) 
+//             }
+//         }
 
-        const filter = () => {
+//         const filter = () => {
 
-            const checkboxesValuesParties = [...document.querySelectorAll('input[type=checkbox]:checked')].map(el => el.value)
-            const selectedState  = [...document.getElementById('state')].filter(el => el.selected)[0].value 
+//             const checkboxesValuesParties = [...document.querySelectorAll('input[type=checkbox]:checked')].map(el => el.value)
+//             const selectedState  = [...document.getElementById('state')].filter(el => el.selected)[0].value 
             
-            let chamber = currentPage == "senate.html" ? 'senate' : 'house'
+//             let chamber = currentPage == "senate.html" ? 'senate' : 'house'
             
-            getData(chamber)
-                .then(members => {
-                    if (selectedState != "all") { members = members.filter(el => el.state == selectedState) }
-                    members = members.filter(el => checkboxesValuesParties.indexOf(el.party) != -1)
-                    members = members.map(el => createMemberObj(el))
-                    document.getElementById('table-body').innerHTML = ''
-                    renderTable( members )
-                    const tableBodyRows = document.getElementById('table-body').rows.length
-                    tableBodyRows == 0 ? document.getElementById('zero-results-box').classList.remove('hide-me') : document.getElementById('zero-results-box').classList.add('hide-me')
-                }).then (() => {
-                    loader.classList.add('hide-me')
-                })
-        }
+//             getData(chamber)
+//                 .then(members => {
+//                     if (selectedState != "all") { members = members.filter(el => el.state == selectedState) }
+//                     members = members.filter(el => checkboxesValuesParties.indexOf(el.party) != -1)
+//                     members = members.map(el => createMemberObj(el))
+//                     document.getElementById('table-body').innerHTML = ''
+//                     renderTable( members )
+//                     const tableBodyRows = document.getElementById('table-body').rows.length
+//                     tableBodyRows == 0 ? document.getElementById('zero-results-box').classList.remove('hide-me') : document.getElementById('zero-results-box').classList.add('hide-me')
+//                 }).then (() => {
+//                     loader.classList.add('hide-me')
+//                 })
+//         }
 
-        filter();
+//         filter();
    
-    } 
+//     } 
 
-}
+// }
 
 
 
