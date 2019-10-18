@@ -112,6 +112,32 @@ h2, h1 {
 
 table { text-align: center; }
 
+/* CUSTOM TABLE */
+
+.table-container {
+    /* border: 1px solid red; */
+}
+
+.tablehead {
+    padding-top: 1%;
+}
+
+ul.tablerow {
+    /* border: 1px solid white; */
+    display: flex;
+    justify-content: space-evenly;
+}
+
+ul.tablerow li {
+    list-style-type: none;
+    width: 30%;
+    /* border: 1px solid green; */
+    text-align: center;
+    overflow: hidden;
+}
+
+/* END CUSTOM TABLE */
+
 th, td { 
     width: 12%;
     overflow: hidden;
@@ -255,3 +281,5 @@ hr {
 
 
   
+
+

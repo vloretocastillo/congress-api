@@ -9,20 +9,6 @@ let menu = document.getElementById('menu')
 let sticky = menu.offsetTop;
 let makeMenuStickyOnScroll = () => { window.scrollY >= sticky ? menu.classList.add("sticky") : menu.classList.remove("sticky");  }
 
-// ********************************************************* FETCH DATA FUNCTION
-
-const getData =  async (chamber) => {
-    loader.classList.remove('hide-me')
-    const response = await fetch(`https://api.propublica.org/congress/v1/113/${chamber}/members.json`, {
-       method: 'GET',
-       headers: {
-         'X-API-Key': 'VW1RX1TgbPr1hp9uHtgJW2Nr01QcNzQAm8CqrDGl',
-       }
-     });
-   const json = await response.json();
-   const members = await json['results'][0]['members']
-   return members
-};
 
 // ********************************************************* INDEX PAGE
 
@@ -40,128 +26,114 @@ const pagesThatFetchData = [ 'senate.html', 'representatives.html', 'statistics.
 
 if ( pagesThatFetchData.indexOf(currentPage) != -1) {
 
-    const loader = document.getElementById('loader')
-
    // ********************************************************* STATISTICS.HTML
 
     if (currentPage == 'statistics.html') {
 
-        const renderMainTable = (basicStats) => {
-            const tableBody = document.getElementById('table-body')
-            let keys = ['Democrats', 'Republicans', 'Independents', 'Total']
-            for (let i=0; i < keys.length; i++) {
-                let tr = document.createElement('tr')
-                let td = document.createElement('td')
-                td.innerHTML = keys[i] 
-                tr.appendChild(td)
-                tableBody.appendChild(tr)
-            }
-            let i = 0
-            for (let key in basicStats) {
-                const td = document.createElement('td')
-                td.innerHTML = basicStats[key]();
-                tableBody.rows[i].appendChild(td) 
-                i >= 3 ? i = 0 : i +=1 
-            }
-        }
+        // ********************************************************* VUE instance
 
-        const renderStatisticsTable = (members, id) => {
-            const tableBody = document.getElementById(id)
-            for (let i=0; i < members.length; i++) {
-                let tr = document.createElement('tr')
-                for (let j=0; j < members[i].length; j++) {
-                    let td = document.createElement('td')
-                    td.innerHTML = members[i][j]
-                    tr.appendChild(td)
+        let app = new Vue({
+            el: '#root',
+            data : {
+                chamber: 'senate',
+                statistic: 'attendance',
+                loader : true,
+                members: [],
+                democrats: [],
+                republicans : [],
+                independents: [],
+                percentageVotedDemocrats: 0,
+                percentageVotedRepublicans: 0,
+                percentageVotedIndependents: 0,
+                totalPercentage: 0,
+                engagement : {
+                    membersEngagementArray: [],
+                    leastEngaged: [],
+                    mostEngaged: []
+                },
+                loyalty : {
+                    membersLoyalytArray : [],
+                    leastLoyal : [],
+                    mostLoyal : []
                 }
-                tableBody.appendChild(tr)
-            }
-        }
 
-        const filter = () => {       
-            const selectedChamber = selectElement.options[selectElement.selectedIndex].value
-        
-            let chamber = selectedChamber == "S" ? 'senate' : 'house'
-            const h2 = document.getElementsByTagName('h2')[0]
-            selectedChamber == "S" ? h2.innerHTML = "Senate at a Glance" : h2.innerHTML = 'House at a Glance'
-        
-            const tableBodies = document.getElementsByTagName('tbody')
-            for (let i=0; i < tableBodies.length; i++) { tableBodies[i].innerHTML = '' }
-        
-            const selectedTypeStatistic = document.querySelector('input[type=radio]:checked').value
-            const attendanceTables = document.getElementById('attendance-tables')
-            const loyaltyTables = document.getElementById('loyalty-tables')
-        
-            getData(chamber)
-                .then(data => {
-        
-                    const democratMembers = data.filter(el => el.party == 'D');
-                    const republicanMembers = data.filter(el => el.party == 'R');
-                    const independentMembers = data.filter(el => el.party == 'I');
-        
-                    const basicStats = {
-                        numberOfDemocrats : () => { return parseInt( democratMembers.length) },
-                        numberOfRepublicans : () => { return parseInt( republicanMembers.length) },
-                        numberOfIndependents : () =>  { return parseInt( independentMembers.length)},
-                        totalNumber :  function ()  { return this.numberOfDemocrats() + this.numberOfRepublicans() + this.numberOfIndependents() },
-                        democratsPercentageVoted : function () {
-                            const sum = democratMembers.reduce((prev, cur) => prev += parseInt( cur.votes_with_party_pct ), 0)
-                            return (sum / this.numberOfDemocrats()).toFixed(2) + ' %'
-                        },
-                        republicansPercentageVoted : function () {
-                            const sum = republicanMembers.reduce((prev, cur) => prev += parseInt( cur.votes_with_party_pct ), 0)
-                            return (sum / this.numberOfRepublicans()).toFixed(2) + ' %'
-                        },
-                        independentsPercentageVoted : function () {
-                            if ( this.numberOfIndependents() == 0 ) return '0 %'
-                            const sum = independentMembers.reduce((prev, cur) => prev += parseInt( cur.votes_with_party_pct ), 0)
-                            return (sum / this.numberOfIndependents()).toFixed(2) + ' %'
-                        }, 
-                        totalPercentage : function () {
-                            const sum = data.reduce((prev, cur) => prev + parseInt( cur.votes_with_party_pct ), 0)
-                            return (sum / data.length).toFixed(2) + ' %'
-                        },
-                    }
-        
-                    renderMainTable(basicStats)
-        
-                    let tenPercent = (10 * data.length) / 100
-                    const membersEngagement = data.map((el) => [el.first_name + " " + (el.middle_name || '') + ' ' + el.last_name, el.missed_votes, el.missed_votes_pct]).sort(function(a, b){return b[1]-a[1]})
-                    const leastEngaged = membersEngagement.slice(0,tenPercent)
-                    const mostEngaged = membersEngagement.reverse().slice(0,tenPercent)
-        
-                    const membersLoyalty = data.map((el) => {
+            },
+
+            methods : {
+
+                getData : async function (chamber) {
+                    const response = await fetch(`https://api.propublica.org/congress/v1/113/${chamber}/members.json`, {
+                       method: 'GET',
+                       headers: {
+                         'X-API-Key': 'VW1RX1TgbPr1hp9uHtgJW2Nr01QcNzQAm8CqrDGl',
+                       }
+                     });
+                   const json = await response.json();
+                   const members = await json['results'][0]['members']
+                   return members
+                },
+    
+                createLoyaltyArray : function (members) {
+                    return members.map( (el) => {
                         let votesWithParty = Math.floor(el.total_votes * el.votes_with_party_pct / 100)
                         return [el.first_name + " " + (el.middle_name || '') + ' ' + el.last_name, votesWithParty, el.votes_with_party_pct]
                     }).sort(function(a, b){return a[2]-b[2]})
-                    const leastLoyal = membersLoyalty.slice(0,tenPercent)
-                    const mostLoyal = membersLoyalty.reverse().slice(0,tenPercent)
-        
-                    if (selectedTypeStatistic == 'attendance') {
-                        loyaltyTables.classList.add('hide-me')
-                        attendanceTables.classList.remove('hide-me')
-                        renderStatisticsTable(mostEngaged, 'most-engaged')
-                        renderStatisticsTable(leastEngaged, 'least-engaged')
-                    } else {
-                        attendanceTables.classList.add('hide-me')
-                        loyaltyTables.classList.remove('hide-me')
-                        renderStatisticsTable(mostLoyal, 'most-loyal')
-                        renderStatisticsTable(leastLoyal, 'least-loyal')
+                },
+                
+                calculatePercentageVotedByParty : function (party) {
+                    if (party.length == 0 ) return '0 %'
+                    const total = party.reduce((prev, cur) => prev += parseInt( cur.votes_with_party_pct ), 0)
+                    return (total / party.length ).toFixed(2) + ' %'
+                },
+
+                toggleLoader : function (status) { status == 'reveal' ? this.loader = true : this.loader = false  },
+
+                updateData : function(event) {
+                    this.toggleLoader('reveal')
+                    if (event) {
+                        if (event.target.name == 'chamber') this.chamber = event.target.value 
+                        if (event.target.name == 'statistic') this.statistic = event.target.value
                     }
-                })
-                .then (() => {
-                    loader.classList.add('hide-me')
-                })
-        }
+                    this.getData(this.chamber)
+                        .then( members => {
+                            this.members = members
+                            this.democrats = members.filter(el => el.party == 'D')
+                            this.republicans = members.filter(el => el.party == 'R')
+                            this.independents = members.filter(el => el.party == 'I')
+                            this.percentageVotedDemocrats = this.calculatePercentageVotedByParty(this.democrats)
+                            this.percentageVotedRepublicans = this.calculatePercentageVotedByParty(this.republicans)
+                            this.percentageVotedIndependents = this.calculatePercentageVotedByParty(this.independents)
+                            this.totalPercentage = this.calculatePercentageVotedByParty(this.members)
 
-        const selectElement = document.getElementById('party-attendance')
-        selectElement.addEventListener('change', () => filter() ) 
+                            const tenPercent = (10 * this.members.length) / 100 
+                            if (this.statistic == 'attendance') {
+                                this.engagement.membersEngagementArray = this.members.map((el) => [el.first_name + " " + (el.middle_name || '') + ' ' + el.last_name, el.missed_votes, el.missed_votes_pct]).sort(function(a, b){return b[2]-a[2]})
+                                this.engagement.mostEngaged = this.engagement.membersEngagementArray.slice(this.engagement.membersEngagementArray.length - tenPercent) 
+                                this.engagement.leastEngaged = this.engagement.membersEngagementArray.slice(0, tenPercent) 
+                            } else {
+                                this.loyalty.membersLoyaltyArray = this.createLoyaltyArray(this.members)
+                                this.loyalty.mostLoyal = this.loyalty.membersLoyaltyArray.slice(this.loyalty.membersLoyaltyArray.length - tenPercent) 
+                                this.loyalty.leastLoyal = this.loyalty.membersLoyaltyArray.slice(0, tenPercent) 
+                            }
+                        }).then(()=> {
+                            this.toggleLoader('hide')
+                        })
 
-        const radioElements = document.getElementsByName('statistic')
-        for (let i=0; i < radioElements.length; i++) { radioElements[i].addEventListener('click', () => filter()) }
+                },
 
-        filter();
-   } 
+            },
+
+            created : function () {
+                this.updateData()
+            }
+
+        })
+
+
+    }
+      
+     
+
 
    // ********************************************************* SENATE.HTML || REPRESENTATIVES.HTML
    
