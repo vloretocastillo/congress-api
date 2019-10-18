@@ -101,7 +101,40 @@
 
                 updateCurrentPage : function() { this.currentPage = window.location.pathname.split('/').pop() },
 
-                updateData : function(event) {
+                createMemberObj : function (member) {
+                    const memberObject = {}
+                    memberObject.first_name = member.first_name
+                    memberObject.middle_name = member.middle_name
+                    memberObject.last_name = member.last_name
+                    memberObject.state = member.state
+                    memberObject.seniority = member.seniority
+                    memberObject.party = member.party
+                    memberObject.votes_with_party_pct = member.votes_with_party_pct + "%"
+                    return memberObject
+                },
+
+                updateDataChamber : function(event) {
+                    this.toggleLoader('reveal')
+                    const parties = [...document.querySelectorAll('input[type=checkbox]:checked')].map(el => el.value)
+                    const selectedState  = [...document.getElementById('state')].filter(el => el.selected)[0].value 
+                    if (selectedState != "all") { members = members.filter(el => el.state == selectedState) }
+                    this.currentPage == 'senate.html' ? this.chamber = 'senate' : this.chamber = 'house'
+
+                    this.getData(this.chamber)
+                        .then( members => {
+                            members = members.filter(el => parties.indexOf(el.party) != -1)
+                            this.members = members.map(el => this.createMemberObj(el))
+                            console.log(this.members)
+                            // add states
+                            // fix css in house
+                            // display data 
+                        }).then(()=> {
+                            this.toggleLoader('hide')
+                        })
+                },
+
+                updateDataStatistics : function(event) {
+
                     this.toggleLoader('reveal')
                     if (event) {
                         if (event.target.name == 'chamber') this.chamber = event.target.value 
@@ -132,6 +165,8 @@
                             this.toggleLoader('hide')
                         })
 
+                    
+
                 },
 
             },
@@ -143,7 +178,8 @@
 
 
                 this.updateCurrentPage()
-                if ( this.currentPage != 'index.html') this.updateData()
+                if ( this.currentPage == 'statistics.html') this.updateDataStatistics()
+                if ( this.currentPage == 'senate.html' || this.currentPage == 'representatives.html') this.updateDataChamber()
             }
 
         })
