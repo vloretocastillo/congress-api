@@ -39,6 +39,7 @@
                 chamber: 'senate',
                 statistic: 'attendance',
                 loader : true,
+                menuOffSetTop : 0,
                 members: [],
                 democrats: [],
                 republicans : [],
@@ -89,10 +90,18 @@
 
                 toggleLoader : function (status) { status == 'reveal' ? this.loader = true : this.loader = false  },
 
-                changeText : function (event) {
+                revealText : function (event) {
                     const isTextVisible = window.getComputedStyle( document.querySelector( '#toggleText' ) ).display;
                     const readToggleButton = document.getElementById(event.target.id);
                     isTextVisible == 'block' ? readToggleButton.innerHTML = 'Read More' : readToggleButton.innerHTML = 'Read Less'
+                },
+
+                makeMenuStickyOnScroll : function () {
+                    
+                    // let menu = document.getElementById('menu')
+                    let sticky = this.menuOffSetTop
+                    // console.log(window.scrollY, sticky)
+                    window.scrollY >= sticky ? document.getElementById('menu').classList.add("sticky") : document.getElementById('menu').classList.remove("sticky") 
                 },
 
                 updateCurrentPage : function() {
@@ -135,6 +144,9 @@
             },
 
             created : function () {
+                
+                window.addEventListener('scroll', () => ( this.makeMenuStickyOnScroll() ) );
+                this.menuOffSetTop = document.getElementById('menu').offsetTop
                 this.updateCurrentPage()
                 if ( this.currentPage != 'index.html') this.updateData()
             }
