@@ -19,7 +19,7 @@
             <li class="dropdown-li">
               <div class="dropdown">
                 <button class="btn dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  Congress 113
+                  <span class="dropdown-menuu"> Congress 113 </span>
                 </button>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
                   <a href="senate.html"><button class="dropdown-item" type="button">Senate</button></a>
@@ -58,7 +58,6 @@
       </section>
       
       <div class="table-container"> 
-        <!-- <table id="table" class="table table-borderless"> -->
           <div class="tablehead">
             <ul class="tablerow">
                 <li scope="col">Full Name</li>
@@ -70,14 +69,13 @@
           </div>
           <div class="tablebody" id='tablebody'>
               <ul class="tablerow" v-for='member in members'>
-                <li>{{ member.first_name + member.middle_name || '' + member.last_name }}</li>
+                <li>{{ member.first_name + ' ' + member.middle_name + ' ' + member.last_name }}</li>
                 <li>{{ member.state }}</li>
                 <li>{{ member.seniority }}</li>
                 <li>{{ member.party }}</li>
                 <li>{{ member.votes_with_party_pct }}</li>
               </ul>
           </div>
-        <!-- </table> -->
         <div class="hide-me zero-results-box" id="zero-results-box">
           <p>No results matched your search criteria</p>
         </div>
@@ -88,6 +86,7 @@
 
     <div v-if="loader" id="loader" class="lds-circle"><div></div></div>
   </div>
+  <script src="js/states.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
   <script src="js/vue.js"></script>
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
