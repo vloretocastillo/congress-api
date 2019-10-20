@@ -184,7 +184,9 @@ let app = new Vue({
             let counter = 0
             for (let i=0; i < members.length; i++) {
                 if ( counter > limit ) break
-                if (arr.length > 0 && ! (arr[arr.length -1].votesWithPartyPercentage == members[i].votesWithPartyPercentage) ) counter += 1
+                if (arr.length > 0) {
+                    if ( ! (arr[arr.length -1].votesWithPartyPercentage == members[i].votesWithPartyPercentage)) counter += 1
+                } 
                 arr.push(members[i])
             }
             return arr
@@ -197,9 +199,10 @@ let app = new Vue({
             let counter = 0
             for (let i=0; i < members.length; i++) {
                 if ( counter > limit ) break
-                if ( arr.length > 0 ) {
-                    if (!(arr[arr.length -1].missedVotesPercentage == members[i].missedVotesPercentage)) counter += 1
-                }
+                if ( arr.length > 0 && !(arr[arr.length -1].missedVotesPercentage == members[i].missedVotesPercentage)) counter += 1  
+                // if ( arr.length > 0 ) {
+                //     if (!(arr[arr.length -1].missedVotesPercentage == members[i].missedVotesPercentage)) counter += 1
+                // }
                 arr.push(members[i])
             }
             return arr
@@ -238,7 +241,7 @@ let app = new Vue({
                     this.percentageVotedRepublicans = this.calculatePercentageVotedByParty(this.republicans)
                     this.percentageVotedIndependents = this.calculatePercentageVotedByParty(this.independents)
                     this.totalPercentage = this.calculatePercentageVotedByParty(this.members)
-                    const tenPercent = (10 * this.members.length) / 100 
+                    // const tenPercent = (10 * this.members.length) / 100 
                     if (this.statistic == 'attendance') {
                         this.engagement.membersEngagementArray = this.createEngagementArray(this.members)
                         this.engagement.mostEngaged = this.percentageOfMembersEngagement(this.engagement.membersEngagementArray, 'most', 10)//this.engagement.membersEngagementArray.slice(this.engagement.membersEngagementArray.length - tenPercent) 
