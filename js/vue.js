@@ -98,7 +98,7 @@ let app = new Vue({
                 headers: {
                     'X-API-Key': 'VW1RX1TgbPr1hp9uHtgJW2Nr01QcNzQAm8CqrDGl',
                 }
-                });
+            });
             const json = await response.json();
             const members = await json['results'][0]['members']
             return members
@@ -177,30 +177,33 @@ let app = new Vue({
             this.menuOffSetTop = document.getElementById('menu').offsetTop
         },
 
-        percentageOfMembers : function (members, preference, percentage) {
-            // console.log(members)
+        percentageOfMembersLoyalty : function (members, preference, percentage) {
             const limit = Math.floor( (percentage * this.members.length) / 100 )
             if (preference == 'least') members = [...members].reverse()
-            console.log(preference, members.length, limit)
-
-            
             let arr = []
             let counter = 0
-            // while (counter < limit) {
-                for (let i=0; i < members.length; i++) {
-                    if ( counter > limit ) break
-                    if (arr.length > 0 ) {
-                        if (! (arr[arr.length -1].votesWithPartyPercentage == members[i].votesWithPartyPercentage) ) counter += 1
-                    }
-                    arr.push(members[i])
-                }
-            // }
-            console.log('returning arr:', arr.length)
+            for (let i=0; i < members.length; i++) {
+                if ( counter > limit ) break
+                if (arr.length > 0 && ! (arr[arr.length -1].votesWithPartyPercentage == members[i].votesWithPartyPercentage) ) counter += 1
+                arr.push(members[i])
+            }
             return arr
-
         },
 
-        
+        percentageOfMembersEngagement : function (members, preference, percentage) {
+            const limit = Math.floor( (percentage * this.members.length) / 100 )
+            if (preference == 'most') members = [...members].reverse()
+            let arr = []
+            let counter = 0
+            for (let i=0; i < members.length; i++) {
+                if ( counter > limit ) break
+                if ( arr.length > 0 ) {
+                    if (!(arr[arr.length -1].missedVotesPercentage == members[i].missedVotesPercentage)) counter += 1
+                }
+                arr.push(members[i])
+            }
+            return arr
+        },
 
         updateDataChamber : function(event) {
             this.toggleLoader('reveal')
@@ -218,8 +221,6 @@ let app = new Vue({
                     tableBodyRows == 0 ? document.getElementById('zero-results-box').classList.remove('hide-me') : document.getElementById('zero-results-box').classList.add('hide-me')                    
                 }).catch(err => console.log(err))
         },
-
-        
 
         updateDataStatistics : function(event) {
             this.toggleLoader('reveal')
@@ -240,17 +241,12 @@ let app = new Vue({
                     const tenPercent = (10 * this.members.length) / 100 
                     if (this.statistic == 'attendance') {
                         this.engagement.membersEngagementArray = this.createEngagementArray(this.members)
-                        this.engagement.mostEngaged = this.engagement.membersEngagementArray.slice(this.engagement.membersEngagementArray.length - tenPercent) 
-                        this.engagement.leastEngaged = this.engagement.membersEngagementArray.slice(0, tenPercent) 
+                        this.engagement.mostEngaged = this.percentageOfMembersEngagement(this.engagement.membersEngagementArray, 'most', 10)//this.engagement.membersEngagementArray.slice(this.engagement.membersEngagementArray.length - tenPercent) 
+                        this.engagement.leastEngaged = this.percentageOfMembersEngagement(this.engagement.membersEngagementArray, 'least', 10)//this.engagement.membersEngagementArray.slice(0, tenPercent) 
                     } else {
                         this.loyalty.membersLoyaltyArray = this.createLoyaltyArray(this.members)
-                        // for (let i=0; i < this.loyalty.membersLoyaltyArray.length; i++) {
-                        //     console.log(this.loyalty.membersLoyaltyArray[i])
-                        // }
-                        this.loyalty.leastLoyal = this.percentageOfMembers(this.loyalty.membersLoyaltyArray, 'least', 10) //this.loyalty.membersLoyaltyArray.slice(0, tenPercent) 
-                        this.loyalty.mostLoyal = this.percentageOfMembers(this.loyalty.membersLoyaltyArray, 'most', 10) //this.loyalty.membersLoyaltyArray.slice(this.loyalty.membersLoyaltyArray.length - tenPercent) 
-                        // console.log('most loyal: ', this.loyalty.mostLoyal)
-                        // console.log('least loyal: ', this.loyalty.leastLoyal)
+                        this.loyalty.leastLoyal = this.percentageOfMembersLoyalty(this.loyalty.membersLoyaltyArray, 'least', 10) //this.loyalty.membersLoyaltyArray.slice(0, tenPercent) 
+                        this.loyalty.mostLoyal = this.percentageOfMembersLoyalty(this.loyalty.membersLoyaltyArray, 'most', 10) //this.loyalty.membersLoyaltyArray.slice(this.loyalty.membersLoyaltyArray.length - tenPercent) 
                     }
                 }).then(()=> this.toggleLoader('hide')).catch(err => console.log(err))
         },
@@ -268,23 +264,3 @@ let app = new Vue({
     }
 
 })
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
