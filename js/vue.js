@@ -92,6 +92,35 @@ let app = new Vue({
 
     methods : {
 
+        updateCurrentPage : function() { this.currentPage = window.location.pathname.split('/').pop() },
+        toggleLoader : function (status) { 
+            status == 'reveal' ? this.loader = true : status == 'hide' ? this.loader = false  : false
+        },
+        revealText : function (event) {
+            const isTextVisible = window.getComputedStyle( document.querySelector( '#toggleText' ) ).display;
+            const readToggleButton = document.getElementById(event.target.id);
+            isTextVisible == 'block' ? readToggleButton.innerHTML = 'Read More' : readToggleButton.innerHTML = 'Read Less'
+        },
+        makeMenuStickyOnScroll : function () {
+            window.scrollY >= this.menuOffSetTop ? document.getElementById('menu').classList.add("sticky") : document.getElementById('menu').classList.remove("sticky") 
+        },
+        onScrollAddEventListener : function () {
+            window.addEventListener('scroll', () => ( this.makeMenuStickyOnScroll() ) );
+            this.menuOffSetTop = document.getElementById('menu').offsetTop
+        },
+        populateWithStates : function () {
+            this.states = states
+            let stateSelect = document.getElementById('state');
+            for(let i = 0; i < this.states.length; i++) {
+                let option = document.createElement('option');
+                option.innerHTML = this.states[i].name;
+                option.value = this.states[i].abbreviation;
+                stateSelect.appendChild(option);
+            }
+        },
+        
+        // ***********************************************************************************************************************
+
         getData : async function (chamber) {
             const response = await fetch(`https://api.propublica.org/congress/v1/113/${chamber}/members.json`, {
                 method: 'GET',
@@ -114,7 +143,6 @@ let app = new Vue({
                 return obj
             }).sort(function(a, b){return b.missedVotesPercentage-a.missedVotesPercentage})
         },
-
         createLoyaltyArray : function (members) {
             return members.map( (el) => {
                 const votesWithParty = Math.floor(el.total_votes * el.votes_with_party_pct / 100)
@@ -127,27 +155,12 @@ let app = new Vue({
             }).sort(function(a, b){return b.votesWithPartyPercentage-a.votesWithPartyPercentage})
         },
         
+
         calculatePercentageVotedByParty : function (party) {
             if (party.length == 0 ) return '0 %'
             const total = party.reduce((prev, cur) => prev += parseInt( cur.votes_with_party_pct ), 0)
             return (total / party.length ).toFixed(2) + ' %'
         },
-
-        toggleLoader : function (status) { 
-            status == 'reveal' ? this.loader = true : status == 'hide' ? this.loader = false  : false
-        },
-
-        revealText : function (event) {
-            const isTextVisible = window.getComputedStyle( document.querySelector( '#toggleText' ) ).display;
-            const readToggleButton = document.getElementById(event.target.id);
-            isTextVisible == 'block' ? readToggleButton.innerHTML = 'Read More' : readToggleButton.innerHTML = 'Read Less'
-        },
-
-        makeMenuStickyOnScroll : function () {
-            window.scrollY >= this.menuOffSetTop ? document.getElementById('menu').classList.add("sticky") : document.getElementById('menu').classList.remove("sticky") 
-        },
-
-        updateCurrentPage : function() { this.currentPage = window.location.pathname.split('/').pop() },
 
         createMemberObj : function (member) {
             const memberObject = {}
@@ -161,22 +174,7 @@ let app = new Vue({
             return memberObject
         },
 
-        populateWithStates : function () {
-            this.states = states
-            let stateSelect = document.getElementById('state');
-            for(let i = 0; i < this.states.length; i++) {
-                let option = document.createElement('option');
-                option.innerHTML = this.states[i].name;
-                option.value = this.states[i].abbreviation;
-                stateSelect.appendChild(option);
-            }
-        },
-
-        onScrollAddEventListener : function () {
-            window.addEventListener('scroll', () => ( this.makeMenuStickyOnScroll() ) );
-            this.menuOffSetTop = document.getElementById('menu').offsetTop
-        },
-
+        
         percentageOfMembersLoyalty : function (members, preference, percentage) {
             const limit = Math.floor( (percentage * this.members.length) / 100 )
             if (preference == 'least') members = [...members].reverse()
@@ -207,6 +205,8 @@ let app = new Vue({
             }
             return arr
         },
+
+        // ************************************************************************************************************
 
         updateDataChamber : function(event) {
             this.toggleLoader('reveal')
