@@ -123,13 +123,13 @@
                 <div class="tablebody">
                     <ul class="tablerow" v-for='member in engagement.leastEngaged'>
                         <li>
-                           {{ member[0] }}
+                           {{ member.fullName }}
                         </li>
                         <li>
-                            {{ member[1] }}
+                            {{ member.missedVotes }}
                         </li>
                         <li>
-                            {{ member[2] }}
+                            {{ member.missedVotesPercentage }}
                         </li>
                     </ul>
                 </div>                
@@ -147,13 +147,13 @@
                 <div class="tablebody">
                     <ul class="tablerow" v-for='member in engagement.mostEngaged'>
                         <li>
-                            {{ member[0] }}
+                            {{ member.fullName }}
                         </li>
                         <li>
-                            {{ member[1] }}
+                            {{ member.missedVotes }}
                         </li>
                         <li>
-                            {{ member[2] }}
+                            {{ member.missedVotesPercentage }}
                         </li>
                     </ul>
                 </div>                
@@ -175,13 +175,13 @@
                 <div class="tablebody">
                     <ul class="tablerow" v-for='member in loyalty.leastLoyal'>
                         <li>
-                            {{ member[0] }}
+                            {{ member.fullName }}
                         </li>
                         <li>
-                            {{ member[1] }}
+                            {{ member.votesWithParty }}
                         </li>
                         <li>
-                            {{ member[2] }}
+                            {{ member.votesWithPartyPercentage }}
                         </li>
                     </ul>
                 </div>  
@@ -199,13 +199,13 @@
                 <div class="tablebody">
                     <ul class="tablerow" v-for='member in loyalty.mostLoyal'>
                         <li>
-                            {{ member[0] }}
+                            {{ member.fullName }}
                         </li>
                         <li>
-                            {{ member[1] }}
+                            {{ member.votesWithParty }}
                         </li>
                         <li>
-                            {{ member[2] }}
+                            {{ member.votesWithPartyPercentage }}
                         </li>
                     </ul>
                 </div>  

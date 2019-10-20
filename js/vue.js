@@ -104,11 +104,27 @@ let app = new Vue({
             return members
         },
 
+        createEngagementArray : function (members)  {
+            return members.map((el) => { 
+                let obj = { 
+                    fullName : el.first_name + " " + (el.middle_name || '') + ' ' + el.last_name, 
+                    missedVotes: el.missed_votes, 
+                    missedVotesPercentage : el.missed_votes_pct
+                }
+                return obj
+            }).sort(function(a, b){return b.missedVotesPercentage-a.missedVotesPercentage})
+        },
+
         createLoyaltyArray : function (members) {
             return members.map( (el) => {
-                let votesWithParty = Math.floor(el.total_votes * el.votes_with_party_pct / 100)
-                return [el.first_name + " " + (el.middle_name || '') + ' ' + el.last_name, votesWithParty, el.votes_with_party_pct]
-            }).sort(function(a, b){return a[2]-b[2]})
+                const votesWithParty = Math.floor(el.total_votes * el.votes_with_party_pct / 100)
+                let obj = { 
+                    fullName : el.first_name + " " + (el.middle_name || '') + ' ' + el.last_name, 
+                    votesWithParty: votesWithParty, 
+                    votesWithPartyPercentage : el.votes_with_party_pct
+                }
+                return obj
+            }).sort(function(a, b){return b.votesWithPartyPercentage-a.votesWithPartyPercentage})
         },
         
         calculatePercentageVotedByParty : function (party) {
@@ -118,7 +134,6 @@ let app = new Vue({
         },
 
         toggleLoader : function (status) { 
-            // console.log(status)
             status == 'reveal' ? this.loader = true : status == 'hide' ? this.loader = false  : false
         },
 
@@ -162,6 +177,29 @@ let app = new Vue({
             this.menuOffSetTop = document.getElementById('menu').offsetTop
         },
 
+        percentageOfMembers : function (members, preference, percentage) {
+            // console.log(members)
+            const limit = Math.floor( (percentage * this.members.length) / 100 )
+            if (preference == 'least') members = [...members].reverse()
+            console.log(preference, members.length, limit)
+
+            
+            let arr = []
+            let counter = 0
+            // while (counter < limit) {
+                for (let i=0; i < members.length; i++) {
+                    if ( counter > limit ) break
+                    if (arr.length > 0 ) {
+                        if (! (arr[arr.length -1].votesWithPartyPercentage == members[i].votesWithPartyPercentage) ) counter += 1
+                    }
+                    arr.push(members[i])
+                }
+            // }
+            console.log('returning arr:', arr.length)
+            return arr
+
+        },
+
         
 
         updateDataChamber : function(event) {
@@ -181,6 +219,8 @@ let app = new Vue({
                 }).catch(err => console.log(err))
         },
 
+        
+
         updateDataStatistics : function(event) {
             this.toggleLoader('reveal')
             if (event) {
@@ -199,24 +239,25 @@ let app = new Vue({
                     this.totalPercentage = this.calculatePercentageVotedByParty(this.members)
                     const tenPercent = (10 * this.members.length) / 100 
                     if (this.statistic == 'attendance') {
-                        this.engagement.membersEngagementArray = this.members.map((el) => [el.first_name + " " + (el.middle_name || '') + ' ' + el.last_name, el.missed_votes, el.missed_votes_pct]).sort(function(a, b){return b[2]-a[2]})
+                        this.engagement.membersEngagementArray = this.createEngagementArray(this.members)
                         this.engagement.mostEngaged = this.engagement.membersEngagementArray.slice(this.engagement.membersEngagementArray.length - tenPercent) 
                         this.engagement.leastEngaged = this.engagement.membersEngagementArray.slice(0, tenPercent) 
                     } else {
                         this.loyalty.membersLoyaltyArray = this.createLoyaltyArray(this.members)
-                        this.loyalty.mostLoyal = this.loyalty.membersLoyaltyArray.slice(this.loyalty.membersLoyaltyArray.length - tenPercent) 
-                        this.loyalty.leastLoyal = this.loyalty.membersLoyaltyArray.slice(0, tenPercent) 
+                        // for (let i=0; i < this.loyalty.membersLoyaltyArray.length; i++) {
+                        //     console.log(this.loyalty.membersLoyaltyArray[i])
+                        // }
+                        this.loyalty.leastLoyal = this.percentageOfMembers(this.loyalty.membersLoyaltyArray, 'least', 10) //this.loyalty.membersLoyaltyArray.slice(0, tenPercent) 
+                        this.loyalty.mostLoyal = this.percentageOfMembers(this.loyalty.membersLoyaltyArray, 'most', 10) //this.loyalty.membersLoyaltyArray.slice(this.loyalty.membersLoyaltyArray.length - tenPercent) 
+                        // console.log('most loyal: ', this.loyalty.mostLoyal)
+                        // console.log('least loyal: ', this.loyalty.leastLoyal)
                     }
-                }).then(()=> {
-                    this.toggleLoader('hide')
-                }).catch(err => console.log(err))
+                }).then(()=> this.toggleLoader('hide')).catch(err => console.log(err))
         },
 
     },
 
     created : function () {
-        // window.addEventListener('scroll', () => ( this.makeMenuStickyOnScroll() ) );
-        // this.menuOffSetTop = document.getElementById('menu').offsetTop
         this.onScrollAddEventListener()
         this.updateCurrentPage()
         if ( this.currentPage == 'statistics.html') this.updateDataStatistics()
