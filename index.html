@@ -55,8 +55,8 @@
 
       <p>
         <button id="read-button" class="btn btn-primary read-more-button" type="button" data-toggle="collapse" data-target="#toggleText" aria-expanded="false" aria-controls="collapseExample" 
-        v-on:click='revealText($event)'>
-          Read More
+        v-on:click='toggleText()' v-model='displayText'>
+          {{ toggleTextInnerHtml }}
         </button>
       </p>
       

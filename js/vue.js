@@ -14,13 +14,14 @@ let app = new Vue({
     el: '#root',
     data : {
         currentPage: '',
+        displayText: false,
+        toggleTextInnerHtml : 'Read More',
         chamber: 'senate',
         statistic: 'attendance',
         loader : true,
         states : [],
         selectedState: 'all',
         selectedParties : ['R', 'D', 'I'],
-        // menuOffSetTop : 0,
         members: [],
         democrats: [],
         republicans : [],
@@ -46,28 +47,9 @@ let app = new Vue({
         toggleLoader : function (status) { 
             status == 'reveal' ? this.loader = true : status == 'hide' ? this.loader = false  : false
         },
-        revealText : function (event) {
-            const isTextVisible = window.getComputedStyle( document.querySelector( '#toggleText' ) ).display;
-            const readToggleButton = document.getElementById(event.target.id);
-            isTextVisible == 'block' ? readToggleButton.innerHTML = 'Read More' : readToggleButton.innerHTML = 'Read Less'
-        },
-        // makeMenuStickyOnScroll : function () {
-        //     window.scrollY >= this.menuOffSetTop ? document.getElementById('menu').classList.add("sticky") : document.getElementById('menu').classList.remove("sticky") 
-        // },
-
-        // onScrollAddEventListener : function () {
-        //     window.addEventListener('scroll', () => { this.makeMenuStickyOnScroll() } )
-        //     this.menuOffSetTop = document.getElementById('menu').offsetTop
-        // },
-        populateWithStates : function () {
-            this.states = states
-            let stateSelect = document.getElementById('state');
-            for(let i = 0; i < this.states.length; i++) {
-                let option = document.createElement('option');
-                option.innerHTML = this.states[i].name;
-                option.value = this.states[i].abbreviation;
-                stateSelect.appendChild(option);
-            }
+        toggleText : function () {
+            this.toggleTextInnerHtml = this.displayText ? 'Read More' : 'Read Less'
+            this.displayText = !this.displayText
         },
 
         // ***********************************************************************************************************************
