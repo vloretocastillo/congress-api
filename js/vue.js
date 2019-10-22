@@ -1,4 +1,15 @@
 
+const makeMenuStickyOnScroll = function (menuOffSetTop) {
+    window.scrollY >= menuOffSetTop ? document.getElementById('menu').classList.add("sticky") : document.getElementById('menu').classList.remove("sticky") 
+}
+
+const onScrollAddEventListener = function () {
+    let menuOffSetTop = document.getElementById('menu').offsetTop
+    window.addEventListener('scroll', () => makeMenuStickyOnScroll(menuOffSetTop) )   
+}
+
+onScrollAddEventListener()
+
 let app = new Vue({
     el: '#root',
     data : {
@@ -9,7 +20,7 @@ let app = new Vue({
         states : [],
         selectedState: 'all',
         selectedParties : ['R', 'D', 'I'],
-        menuOffSetTop : 0,
+        // menuOffSetTop : 0,
         members: [],
         democrats: [],
         republicans : [],
@@ -40,14 +51,14 @@ let app = new Vue({
             const readToggleButton = document.getElementById(event.target.id);
             isTextVisible == 'block' ? readToggleButton.innerHTML = 'Read More' : readToggleButton.innerHTML = 'Read Less'
         },
-        makeMenuStickyOnScroll : function () {
-            window.scrollY >= this.menuOffSetTop ? document.getElementById('menu').classList.add("sticky") : document.getElementById('menu').classList.remove("sticky") 
-        },
+        // makeMenuStickyOnScroll : function () {
+        //     window.scrollY >= this.menuOffSetTop ? document.getElementById('menu').classList.add("sticky") : document.getElementById('menu').classList.remove("sticky") 
+        // },
 
-        onScrollAddEventListener : function () {
-            window.addEventListener('scroll', () => { this.makeMenuStickyOnScroll() } )
-            this.menuOffSetTop = document.getElementById('menu').offsetTop
-        },
+        // onScrollAddEventListener : function () {
+        //     window.addEventListener('scroll', () => { this.makeMenuStickyOnScroll() } )
+        //     this.menuOffSetTop = document.getElementById('menu').offsetTop
+        // },
         populateWithStates : function () {
             this.states = states
             let stateSelect = document.getElementById('state');
@@ -189,14 +200,11 @@ let app = new Vue({
 
     },
 
-    created : function () {
-        // this.states = states || []
-        
-        this.onScrollAddEventListener()
+    created : function () {        
+        // this.onScrollAddEventListener()
         this.updateCurrentPage()
         if ( this.currentPage == 'statistics.html') this.updateDataStatistics()
         if ( this.currentPage == 'senate.html' || this.currentPage == 'representatives.html') {
-            // this.populateWithStates()
             this.states = states
             this.updateDataChamber()
         }

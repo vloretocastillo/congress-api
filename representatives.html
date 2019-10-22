@@ -56,7 +56,7 @@
       <section class="filter filter-section">
           <select id="state" v-on:change="updateDataChamber()" v-model='selectedState'>
             <option value="all" selected=true>All States</option>
-              <option v-for='state in states' :value= "state.abbreviation" >{{ state.name }}</option>
+            <option v-for='state in states' :value= "state.abbreviation" >{{ state.name }}</option>
           </select> 
       </section>
     
@@ -82,10 +82,14 @@
         </tbody>
         <!-- </table> -->
 
-        <div class="hide-me zero-results-box" id="zero-results-box">
-            <p>No results matched your search criteria</p>
-          </div>
+        
+        
+      
       </table>  
+
+      <div class="hide-me zero-results-box" id="zero-results-box">
+        <p>No results matched your search criteria</p>
+      </div>
     
     </div>
 

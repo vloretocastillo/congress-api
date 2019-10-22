@@ -55,10 +55,11 @@
       </section>
 
       <section class="filter filter-section">
-          <select id="state" v-model='selectedState' v-on:change="updateDataChamber()">
-            <option value="all" selected=true>All States</option>
-          </select> 
-      </section>
+        <select id="state" v-on:change="updateDataChamber()" v-model='selectedState'>
+          <option value="all" selected=true>All States</option>
+          <option v-for='state in states' :value= "state.abbreviation" >{{ state.name }}</option>
+        </select> 
+    </section>
 
       
       <table class="table-container"> 
@@ -80,10 +81,10 @@
                 <td>{{ member.votes_with_party_pct }}</td>
               </tr>
           </tbody>
-        <div class="hide-me zero-results-box" id="zero-results-box">
-          <p>No results matched your search criteria</p>
-        </div>
       </table>  
+      <div class="hide-me zero-results-box" id="zero-results-box">
+        <p>No results matched your search criteria</p>
+      </div>
     </div>
 
     <footer id='footer'></footer>
