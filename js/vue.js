@@ -59,6 +59,7 @@
 //     { name: 'WEST VIRGINIA', abbreviation: 'WV'},
 //     { name: 'WISCONSIN', abbreviation: 'WI'},
 //     { name: 'WYOMING', abbreviation: 'WY' }
+
 // ];
 
 let app = new Vue({
@@ -68,6 +69,9 @@ let app = new Vue({
         chamber: 'senate',
         statistic: 'attendance',
         loader : true,
+        // backToTop : false,
+        // mainOffSetTop : 0,
+        // footerOffSetTop: 0,
         states : [],
         menuOffSetTop : 0,
         members: [],
@@ -104,9 +108,17 @@ let app = new Vue({
         makeMenuStickyOnScroll : function () {
             window.scrollY >= this.menuOffSetTop ? document.getElementById('menu').classList.add("sticky") : document.getElementById('menu').classList.remove("sticky") 
         },
+
+        // revealBackToTopButton : function () {window.scrollY >= this.mainOffSetTop ? this.backToTop = true : this.backToTop = false},
+
         onScrollAddEventListener : function () {
-            window.addEventListener('scroll', () => ( this.makeMenuStickyOnScroll() ) );
+            window.addEventListener('scroll', () => {
+                this.makeMenuStickyOnScroll() 
+                // this.revealBackToTopButton()
+                // console.log(document.getElementById('footer').offsetTop, window.innerHeight)
+            } );
             this.menuOffSetTop = document.getElementById('menu').offsetTop
+            // this.mainOffSetTop = document.getElementById('mainContainer').offsetTop
         },
         populateWithStates : function () {
             this.states = states
@@ -118,7 +130,7 @@ let app = new Vue({
                 stateSelect.appendChild(option);
             }
         },
-        
+
         // ***********************************************************************************************************************
 
         getData : async function (chamber) {
