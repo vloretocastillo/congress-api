@@ -1,66 +1,4 @@
 
-// const states = [
-//     { name: 'ALABAMA', abbreviation: 'AL'},
-//     { name: 'ALASKA', abbreviation: 'AK'},
-//     { name: 'AMERICAN SAMOA', abbreviation: 'AS'},
-//     { name: 'ARIZONA', abbreviation: 'AZ'},
-//     { name: 'ARKANSAS', abbreviation: 'AR'},
-//     { name: 'CALIFORNIA', abbreviation: 'CA'},
-//     { name: 'COLORADO', abbreviation: 'CO'},
-//     { name: 'CONNECTICUT', abbreviation: 'CT'},
-//     { name: 'DELAWARE', abbreviation: 'DE'},
-//     { name: 'DISTRICT OF COLUMBIA', abbreviation: 'DC'},
-//     { name: 'FEDERATED STATES OF MICRONESIA', abbreviation: 'FM'},
-//     { name: 'FLORIDA', abbreviation: 'FL'},
-//     { name: 'GEORGIA', abbreviation: 'GA'},
-//     { name: 'GUAM', abbreviation: 'GU'},
-//     { name: 'HAWAII', abbreviation: 'HI'},
-//     { name: 'IDAHO', abbreviation: 'ID'},
-//     { name: 'ILLINOIS', abbreviation: 'IL'},
-//     { name: 'INDIANA', abbreviation: 'IN'},
-//     { name: 'IOWA', abbreviation: 'IA'},
-//     { name: 'KANSAS', abbreviation: 'KS'},
-//     { name: 'KENTUCKY', abbreviation: 'KY'},
-//     { name: 'LOUISIANA', abbreviation: 'LA'},
-//     { name: 'MAINE', abbreviation: 'ME'},
-//     { name: 'MARSHALL ISLANDS', abbreviation: 'MH'},
-//     { name: 'MARYLAND', abbreviation: 'MD'},
-//     { name: 'MASSACHUSETTS', abbreviation: 'MA'},
-//     { name: 'MICHIGAN', abbreviation: 'MI'},
-//     { name: 'MINNESOTA', abbreviation: 'MN'},
-//     { name: 'MISSISSIPPI', abbreviation: 'MS'},
-//     { name: 'MISSOURI', abbreviation: 'MO'},
-//     { name: 'MONTANA', abbreviation: 'MT'},
-//     { name: 'NEBRASKA', abbreviation: 'NE'},
-//     { name: 'NEVADA', abbreviation: 'NV'},
-//     { name: 'NEW HAMPSHIRE', abbreviation: 'NH'},
-//     { name: 'NEW JERSEY', abbreviation: 'NJ'},
-//     { name: 'NEW MEXICO', abbreviation: 'NM'},
-//     { name: 'NEW YORK', abbreviation: 'NY'},
-//     { name: 'NORTH CAROLINA', abbreviation: 'NC'},
-//     { name: 'NORTH DAKOTA', abbreviation: 'ND'},
-//     { name: 'NORTHERN MARIANA ISLANDS', abbreviation: 'MP'},
-//     { name: 'OHIO', abbreviation: 'OH'},
-//     { name: 'OKLAHOMA', abbreviation: 'OK'},
-//     { name: 'OREGON', abbreviation: 'OR'},
-//     { name: 'PALAU', abbreviation: 'PW'},
-//     { name: 'PENNSYLVANIA', abbreviation: 'PA'},
-//     { name: 'PUERTO RICO', abbreviation: 'PR'},
-//     { name: 'RHODE ISLAND', abbreviation: 'RI'},
-//     { name: 'SOUTH CAROLINA', abbreviation: 'SC'},
-//     { name: 'SOUTH DAKOTA', abbreviation: 'SD'},
-//     { name: 'TENNESSEE', abbreviation: 'TN'},
-//     { name: 'TEXAS', abbreviation: 'TX'},
-//     { name: 'UTAH', abbreviation: 'UT'},
-//     { name: 'VERMONT', abbreviation: 'VT'},
-//     { name: 'VIRGIN ISLANDS', abbreviation: 'VI'},
-//     { name: 'VIRGINIA', abbreviation: 'VA'},
-//     { name: 'WASHINGTON', abbreviation: 'WA'},
-//     { name: 'WEST VIRGINIA', abbreviation: 'WV'},
-//     { name: 'WISCONSIN', abbreviation: 'WI'},
-//     { name: 'WYOMING', abbreviation: 'WY' }
-
-// ];
 
 let app = new Vue({
     el: '#root',
@@ -69,9 +7,6 @@ let app = new Vue({
         chamber: 'senate',
         statistic: 'attendance',
         loader : true,
-        // backToTop : false,
-        // mainOffSetTop : 0,
-        // footerOffSetTop: 0,
         states : [],
         menuOffSetTop : 0,
         members: [],
@@ -109,16 +44,9 @@ let app = new Vue({
             window.scrollY >= this.menuOffSetTop ? document.getElementById('menu').classList.add("sticky") : document.getElementById('menu').classList.remove("sticky") 
         },
 
-        // revealBackToTopButton : function () {window.scrollY >= this.mainOffSetTop ? this.backToTop = true : this.backToTop = false},
-
         onScrollAddEventListener : function () {
-            window.addEventListener('scroll', () => {
-                this.makeMenuStickyOnScroll() 
-                // this.revealBackToTopButton()
-                // console.log(document.getElementById('footer').offsetTop, window.innerHeight)
-            } );
+            window.addEventListener('scroll', () => { this.makeMenuStickyOnScroll() } )
             this.menuOffSetTop = document.getElementById('menu').offsetTop
-            // this.mainOffSetTop = document.getElementById('mainContainer').offsetTop
         },
         populateWithStates : function () {
             this.states = states
@@ -210,10 +138,7 @@ let app = new Vue({
             for (let i=0; i < members.length; i++) {
                 if ( counter > limit ) break
                 if ( arr.length > 0 && !(arr[arr.length -1].missedVotesPercentage == members[i].missedVotesPercentage)) counter += 1  
-                // if ( arr.length > 0 ) {
-                //     if (!(arr[arr.length -1].missedVotesPercentage == members[i].missedVotesPercentage)) counter += 1
-                // }
-                arr.push(members[i])
+=                arr.push(members[i])
             }
             return arr
         },
@@ -253,7 +178,6 @@ let app = new Vue({
                     this.percentageVotedRepublicans = this.calculatePercentageVotedByParty(this.republicans)
                     this.percentageVotedIndependents = this.calculatePercentageVotedByParty(this.independents)
                     this.totalPercentage = this.calculatePercentageVotedByParty(this.members)
-                    // const tenPercent = (10 * this.members.length) / 100 
                     if (this.statistic == 'attendance') {
                         this.engagement.membersEngagementArray = this.createEngagementArray(this.members)
                         this.engagement.mostEngaged = this.percentageOfMembersEngagement(this.engagement.membersEngagementArray, 'most', 10)//this.engagement.membersEngagementArray.slice(this.engagement.membersEngagementArray.length - tenPercent) 
