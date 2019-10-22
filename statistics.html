@@ -40,62 +40,62 @@
             </select>
         </section>   
         <h2>{{ chamber[0].toUpperCase() + chamber.slice(1) }} at a Glance</h2>
-        <div class="table-container"> 
-            <div class="tablehead">
-                <ul class="tablerow">
-                    <li scope="col">Party </li>
-                    <li scope="col">No. of Reps</li>
-                    <li scope="col">% Voted by the Party</li> 
-                </ul>
-            </div>
-            <div class="tablebody"> 
-                <ul class="tablerow">
-                    <li>
+        <table class="table-container"> 
+            <thead class="tablehead">
+                <tr class="tablero">
+                    <td scope="col">Party </td>
+                    <td scope="col">No. of Reps</td>
+                    <td scope="col">% Voted by the Party</td> 
+                </tr>
+            </thead>
+            <tbody class="tablebod"> 
+                <tr class="tablero">
+                    <td>
                         Democrats
-                    </li>
-                    <li>
+                    </td>
+                    <td>
                         {{ democrats.length }}
-                    </li>
-                    <li>
+                    </td>
+                    <td>
                         {{ percentageVotedDemocrats }}
-                    </li>   
-                </ul>
-                <ul class="tablerow">
-                    <li>
+                    </td>   
+                </tr>
+                <tr class="tablero">
+                    <td>
                         Republicans
-                    </li>
-                    <li>
+                    </td>
+                    <td>
                         {{ republicans.length }}
-                    </li> 
-                    <li>
+                    </td> 
+                    <td>
                         {{ percentageVotedRepublicans }}
-                    </li>
-                </ul>
-                <ul class="tablerow">
-                    <li>
+                    </td>
+                </tr>
+                <tr class="tablero">
+                    <td>
                         Independents
-                    </li>
-                    <li>
+                    </td>
+                    <td>
                         {{ independents.length }}
-                    </li> 
-                    <li>
+                    </td> 
+                    <td>
                         {{ percentageVotedIndependents }}
-                    </li>
-                </ul>
-                <ul class="tablerow">
-                    <li>
+                    </td>
+                </tr>
+                <tr class="tablero">
+                    <td>
                         Total
-                    </li>
-                    <li>
+                    </td>
+                    <td>
                         {{ members.length }}
-                    </li> 
-                    <li>
+                    </td> 
+                    <td>
                         {{ totalPercentage }}
-                    </li>
+                    </td>
 
-                </ul>
-            </div>   
-        </div>  
+                </tr>
+            </tbody>   
+        </table>  
 
         <hr>
 
@@ -111,105 +111,105 @@
         <div v-if='statistic == "attendance"' >
         <section id="attendance-tables">
             <h2>Least Engaged</h2>
-            <div class="table-container"> 
-                <div class="tablehead">
-                    <ul class="tablerow">
-                        <li>Name</li>
-                        <li>No. of Missed Votes</li>
-                        <li>% Missed</li> 
-                    </ul>
-                </div>
+            <table class="table-container"> 
+                <thead class="tablehead">
+                    <tr class="tablero">
+                        <td>Name</td>
+                        <td>No. of Missed Votes</td>
+                        <td>% Missed</td> 
+                    </tr>
+                </thead>
 
-                <div class="tablebody">
-                    <ul class="tablerow" v-for='member in engagement.leastEngaged'>
-                        <li>
+                <tbody class="tablebody">
+                    <tr class="tablero" v-for='member in engagement.leastEngaged'>
+                        <td>
                            {{ member.fullName }}
-                        </li>
-                        <li>
+                        </td>
+                        <td>
                             {{ member.missedVotes }}
-                        </li>
-                        <li>
+                        </td>
+                        <td>
                             {{ member.missedVotesPercentage }}
-                        </li>
-                    </ul>
-                </div>                
-            </div>  
+                        </td>
+                    </tr>
+                </tbody>                
+            </table>  
             <hr>
             <h2>Most Engaged</h2>
-            <div class="table-container"> 
-                <div class="tablehead">
-                    <ul class="tablerow">
-                        <li>Name</li>
-                        <li>No. of Missed Votes</li>
-                        <li>% Missed</li> 
-                    </ul>
-                </div>
-                <div class="tablebody">
-                    <ul class="tablerow" v-for='member in engagement.mostEngaged'>
-                        <li>
+            <table class="table-container"> 
+                <thead class="tablehead">
+                    <tr class="tablerow">
+                        <td>Name</td>
+                        <td>No. of Missed Votes</td>
+                        <td>% Missed</td> 
+                    </tr>
+                </thead>
+                <tbody class="tablebody">
+                    <tr class="tablerow" v-for='member in engagement.mostEngaged'>
+                        <td>
                             {{ member.fullName }}
-                        </li>
-                        <li>
+                        </td>
+                        <td>
                             {{ member.missedVotes }}
-                        </li>
-                        <li>
+                        </td>
+                        <td>
                             {{ member.missedVotesPercentage }}
-                        </li>
-                    </ul>
-                </div>                
-            </div>  
+                        </td>
+                    </tr>
+                </tbody>                
+            </table>  
         </section>
         </div>
 
         <div v-else>
         <section id="loyalty-tables">
             <h2>Least Loyal</h2>
-            <div class="table-container"> 
-                <div class="tablehead">
-                    <ul class="tablerow">
-                        <li >Party</li>
-                        <li >No. of Party Votes</li>
-                        <li >% Party Votes</li> 
-                    </ul>
-                </div>
-                <div class="tablebody">
-                    <ul class="tablerow" v-for='member in loyalty.leastLoyal'>
-                        <li>
+            <table class="table-container"> 
+                <thead class="tablehead">
+                    <tr class="tablerow">
+                        <td >Party</td>
+                        <td >No. of Party Votes</td>
+                        <td >% Party Votes</td> 
+                    </tr>
+                </thead>
+                <tbody class="tablebody">
+                    <tr class="tablerow" v-for='member in loyalty.leastLoyal'>
+                        <td>
                             {{ member.fullName }}
-                        </li>
-                        <li>
+                        </td>
+                        <td>
                             {{ member.votesWithParty }}
-                        </li>
-                        <li>
+                        </td>
+                        <td>
                             {{ member.votesWithPartyPercentage }}
-                        </li>
-                    </ul>
-                </div>  
-            </div>  
+                        </td>
+                    </tr>
+                </tbody>  
+            </table>  
             <hr>
             <h2>Most Loyal</h2>
-            <div class="table-container"> 
-                <div class="tablehead">
-                    <ul class="tablerow">
-                        <li>Name</li>
-                        <li>No. of Party Votes</li>
-                        <li>% Party Votes</li> 
-                    </ul>
-                </div>
-                <div class="tablebody">
-                    <ul class="tablerow" v-for='member in loyalty.mostLoyal'>
-                        <li>
+            <table class="table-container"> 
+                <thead class="tablehead">
+                    <tr class="tablerow">
+                        <td>Name</td>
+                        <td>No. of Party Votes</td>
+                        <td>% Party Votes</td> 
+                    </tr>
+                </thead>
+                <tbody class="tablebody">
+                    <tr class="tablerow" v-for='member in loyalty.mostLoyal'>
+                        <td>
                             {{ member.fullName }}
-                        </li>
-                        <li>
+                        </td>
+                        <td>
                             {{ member.votesWithParty }}
-                        </li>
-                        <li>
+                        </td>
+                        <td>
                             {{ member.votesWithPartyPercentage }}
-                        </li>
-                    </ul>
-                </div>  
-            </div>  
+                        </td>
+                    </tr>
+                </tbody>  
+            </table>  
         </section>
         </div>
     </div>

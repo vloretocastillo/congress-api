@@ -61,29 +61,29 @@
       </section>
 
       
-      <div class="table-container"> 
-          <div class="tablehead">
-            <ul class="tablerow">
-                <li scope="col">Full Name</li>
-                <li scope="col">State</li>
-                <li scope="col">Seniority</li>
-                <li scope="col">Party</li>
-                <li scope="col">Votes Percentage</li>
-            </ul>
-          </div>
-          <div class="tablebody" id='tablebody'>
-              <ul class="tablerow" v-for='member in members'>
-                <li>{{ member.first_name + ' ' + member.middle_name + ' ' + member.last_name }}</li>
-                <li>{{ member.state }}</li>
-                <li>{{ member.seniority }}</li>
-                <li>{{ member.party }}</li>
-                <li>{{ member.votes_with_party_pct }}</li>
-              </ul>
-          </div>
+      <table class="table-container"> 
+          <thead class="tablehead">
+            <tr class="tablerow">
+                <td scope="col">Full Name</td>
+                <td scope="col">State</td>
+                <td scope="col">Seniority</td>
+                <td scope="col">Party</td>
+                <td scope="col">Votes Percentage</td>
+            </tr>
+          </thead>
+          <tbody class="tablebody" id='tablebody'>
+              <tr class="tablerow" v-for='member in members'>
+                <td>{{ member.first_name + ' ' + member.middle_name + ' ' + member.last_name }}</td>
+                <td>{{ member.state }}</td>
+                <td>{{ member.seniority }}</td>
+                <td>{{ member.party }}</td>
+                <td>{{ member.votes_with_party_pct }}</td>
+              </tr>
+          </tbody>
         <div class="hide-me zero-results-box" id="zero-results-box">
           <p>No results matched your search criteria</p>
         </div>
-      </div>  
+      </table>  
     </div>
 
     <footer id='footer'></footer>

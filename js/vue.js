@@ -1,5 +1,3 @@
-
-
 let app = new Vue({
     el: '#root',
     data : {
@@ -30,7 +28,6 @@ let app = new Vue({
     },
 
     methods : {
-
         updateCurrentPage : function() { this.currentPage = window.location.pathname.split('/').pop() },
         toggleLoader : function (status) { 
             status == 'reveal' ? this.loader = true : status == 'hide' ? this.loader = false  : false
@@ -138,7 +135,7 @@ let app = new Vue({
             for (let i=0; i < members.length; i++) {
                 if ( counter > limit ) break
                 if ( arr.length > 0 && !(arr[arr.length -1].missedVotesPercentage == members[i].missedVotesPercentage)) counter += 1  
-=                arr.push(members[i])
+                arr.push(members[i])
             }
             return arr
         },

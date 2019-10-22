@@ -33,6 +33,7 @@ nav {
     bottom: 0;
     width: 100%;
     text-align: right;
+    /* border: 1px solid red; */
 }
 
 .dark-cover {
@@ -46,6 +47,8 @@ nav {
 nav ul {
     text-decoration-style: none;
     margin-right: 4%;
+    /* border: 1px solid red; */
+
 }
 
 nav ul li {
@@ -112,18 +115,16 @@ h2, h1 {
 
 table { text-align: center; }
 
-/* CUSTOM TABLE */
-
-.table-container {
-    /* border: 1px solid red; */
+.tablehead {
+    font-weight: bold;
 }
 
-.tablehead {
-    padding-top: 1%;
+.tablehead td {
+    padding-bottom: 2%;
+    font-weight: bold;
 }
 
 ul.tablerow {
-    /* border: 1px solid white; */
     display: flex;
     justify-content: space-evenly;
 }
@@ -131,7 +132,6 @@ ul.tablerow {
 ul.tablerow li {
     list-style-type: none;
     width: 30%;
-    /* border: 1px solid green; */
     text-align: center;
     overflow: hidden;
 }
@@ -280,6 +280,10 @@ hr {
     z-index: 2;
     background-color: grey;
     text-align: center
+}
+
+.sticky ul {
+    margin-right: 0;
 }
 
 .sticky ul li {
