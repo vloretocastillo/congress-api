@@ -1,3 +1,4 @@
+
 let app = new Vue({
     el: '#root',
     data : {
@@ -6,6 +7,8 @@ let app = new Vue({
         statistic: 'attendance',
         loader : true,
         states : [],
+        selectedState: 'all',
+        selectedParties : ['R', 'D', 'I'],
         menuOffSetTop : 0,
         members: [],
         democrats: [],
@@ -67,17 +70,16 @@ let app = new Vue({
             });
             const json = await response.json();
             const members = await json['results'][0]['members']
-            return members
+            return members;
         },
 
         createEngagementArray : function (members)  {
             return members.map((el) => { 
-                let obj = { 
+                return { 
                     fullName : el.first_name + " " + (el.middle_name || '') + ' ' + el.last_name, 
                     missedVotes: el.missed_votes, 
                     missedVotesPercentage : el.missed_votes_pct
                 }
-                return obj
             }).sort(function(a, b){return b.missedVotesPercentage-a.missedVotesPercentage})
         },
         createLoyaltyArray : function (members) {
@@ -144,13 +146,11 @@ let app = new Vue({
 
         updateDataChamber : function(event) {
             this.toggleLoader('reveal')
-            this.currentPage == 'senate.html' ? this.chamber = 'senate' : this.chamber = 'house'
-            const parties = [...document.querySelectorAll('input[type=checkbox]:checked')].map(el => el.value)
-            const selectedState  = [...document.getElementById('state')].filter(el => el.selected)[0].value 
+            this.chamber = this.currentPage == 'senate.html' ? 'senate' : 'house'
             this.getData(this.chamber)
                 .then( members => {
-                    members = members.filter(el => parties.indexOf(el.party) != -1)
-                    if (selectedState != "all") { members = members.filter(el => el.state == selectedState) }
+                    members = members.filter(el => this.selectedParties.indexOf(el.party) != -1)
+                    if (this.selectedState != "all") { members = members.filter(el => el.state == this.selectedState) }
                     this.members = members.map(el => this.createMemberObj(el))
                 }).then(()=> {
                     this.toggleLoader('hide')
@@ -190,13 +190,22 @@ let app = new Vue({
     },
 
     created : function () {
+        // this.states = states || []
+        
         this.onScrollAddEventListener()
         this.updateCurrentPage()
         if ( this.currentPage == 'statistics.html') this.updateDataStatistics()
         if ( this.currentPage == 'senate.html' || this.currentPage == 'representatives.html') {
-            this.populateWithStates()
+            // this.populateWithStates()
+            this.states = states
             this.updateDataChamber()
         }
     }
 
+    // computed methods and values
+    // function 10%
+    // no document.getElement -- replace with v-model
+    // manage the data better
+
 })
+

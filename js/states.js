@@ -1,5 +1,6 @@
 
 const states = [
+    // { name: 'All States', abbreviation: 'all'},
     { name: 'ALABAMA', abbreviation: 'AL'},
     { name: 'ALASKA', abbreviation: 'AK'},
     { name: 'AMERICAN SAMOA', abbreviation: 'AS'},

@@ -42,20 +42,20 @@
       <section class="filter filter-section">
           <div>
             <label for="democrat">Democrat</label>
-            <input type="checkbox" name="party" value="D" id="democrat" checked="true" v-on:click="updateDataChamber()">
+            <input type="checkbox" name="party" value="D" id="democrat" v-model='selectedParties' checked="true" v-on:click="updateDataChamber()">
           </div>
           <div>
               <label for="republican">Republican</label>
-              <input type="checkbox" name="party" value="R" id="republican" checked="true" v-on:click="updateDataChamber()">
+              <input type="checkbox" name="party" value="R" id="republican" v-model='selectedParties' checked="true" v-on:click="updateDataChamber()">
           </div>
           <div>
               <label for="independent">Independent</label>
-              <input type="checkbox" name="party" value="I" id="independent" checked="true" v-on:click="updateDataChamber()">
+              <input type="checkbox" name="party" value="I" id="independent"  v-model='selectedParties' checked="true" v-on:click="updateDataChamber()">
           </div>
       </section>
 
       <section class="filter filter-section">
-          <select id="state" v-on:change="updateDataChamber()">
+          <select id="state" v-model='selectedState' v-on:change="updateDataChamber()">
             <option value="all" selected=true>All States</option>
           </select> 
       </section>
