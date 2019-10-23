@@ -22,24 +22,13 @@ let app = new Vue({
         states : [],
         selectedState: 'all',
         selectedParties : ['R', 'D', 'I'],
-        // Fetched Data
         members: [],
         democrats: [],
         republicans : [],
         independents: [],
-        // percentageVotedDemocrats: 0,
-        // percentageVotedRepublicans: 0,
-        // percentageVotedIndependents: 0,
-        // totalPercentage: 0,
-        // chamberAtAGlance : {
-        //     democrats : [],
-        //     republicans : [],
-        //     independents : []
-        // },
         mostEngaged : [],
-       leastEngaged : [],
-       mostLoyal : []
-        
+        leastEngaged : [],
+        mostLoyal : []        
     },
 
     methods : {
@@ -66,9 +55,12 @@ let app = new Vue({
             return members;
         },
 
-        filterByParty : function (members, party) {
-            return members.filter(el => el.party == party)
-        },
+        // ***********************************************************************************************************************
+
+        filterByParty : function (members, party) { return members.filter(el => el.party == party) },
+
+        // ***********************************************************************************************************************
+
 
         votePercentageByParty : function (party) {
             if (party.length == 0 ) return '0 %'
@@ -76,11 +68,6 @@ let app = new Vue({
             return (total / party.length ).toFixed(2) + ' %'
         },
 
-        
-        
-        
-
-       
         createMemberObj : function (member) {
             return {
                 first_name : member.first_name || '',
@@ -93,16 +80,7 @@ let app = new Vue({
             }
         },
 
-        // createLoyaltyArray : function (members) {
-        //     return members.map( (el) => {
-        //         const votesWithParty = Math.floor(el.total_votes * el.votes_with_party_pct / 100)
-        //         return { 
-        //             fullName : el.first_name + " " + (el.middle_name || '') + ' ' + el.last_name, 
-        //             votesWithParty: votesWithParty, 
-        //             votesWithPartyPercentage : el.votes_with_party_pct
-        //         }
-        //     }).sort(function(a, b){return b.votesWithPartyPercentage-a.votesWithPartyPercentage})
-        // },
+        // ***********************************************************************************************************************
 
         
         percentageOfMembersLoyalty : function (members, preference, percentage) {
