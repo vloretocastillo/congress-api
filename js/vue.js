@@ -22,30 +22,30 @@ let app = new Vue({
         states : [],
         selectedState: 'all',
         selectedParties : ['R', 'D', 'I'],
+        // Fetched Data
         members: [],
         democrats: [],
         republicans : [],
         independents: [],
-        percentageVotedDemocrats: 0,
-        percentageVotedRepublicans: 0,
-        percentageVotedIndependents: 0,
-        totalPercentage: 0,
-        engagement : {
-            membersEngagementArray: [],
-            leastEngaged: [],
-            mostEngaged: []
-        },
-        loyalty : {
-            membersLoyalytArray : [],
-            leastLoyal : [],
-            mostLoyal : []
-        }
+        // percentageVotedDemocrats: 0,
+        // percentageVotedRepublicans: 0,
+        // percentageVotedIndependents: 0,
+        // totalPercentage: 0,
+        // chamberAtAGlance : {
+        //     democrats : [],
+        //     republicans : [],
+        //     independents : []
+        // },
+        mostEngaged : [],
+       leastEngaged : [],
+       mostLoyal : []
+        
     },
 
     methods : {
         updateCurrentPage : function() { this.currentPage = window.location.pathname.split('/').pop() },
         toggleLoader : function (status) { 
-            status == 'reveal' ? this.loader = true : status == 'hide' ? this.loader = false  : false
+            this.loader = status == 'reveal' ? true : false
         },
         toggleText : function () {
             this.toggleTextInnerHtml = this.displayText ? 'Read More' : 'Read Less'
@@ -66,136 +66,125 @@ let app = new Vue({
             return members;
         },
 
-        createEngagementArray : function (members)  {
-            return members.map((el) => { 
-                return { 
-                    fullName : el.first_name + " " + (el.middle_name || '') + ' ' + el.last_name, 
-                    missedVotes: el.missed_votes, 
-                    missedVotesPercentage : el.missed_votes_pct
-                }
-            }).sort(function(a, b){return b.missedVotesPercentage-a.missedVotesPercentage})
+        filterByParty : function (members, party) {
+            return members.filter(el => el.party == party)
         },
-        createLoyaltyArray : function (members) {
-            return members.map( (el) => {
-                const votesWithParty = Math.floor(el.total_votes * el.votes_with_party_pct / 100)
-                let obj = { 
-                    fullName : el.first_name + " " + (el.middle_name || '') + ' ' + el.last_name, 
-                    votesWithParty: votesWithParty, 
-                    votesWithPartyPercentage : el.votes_with_party_pct
-                }
-                return obj
-            }).sort(function(a, b){return b.votesWithPartyPercentage-a.votesWithPartyPercentage})
-        },
-        
 
-        calculatePercentageVotedByParty : function (party) {
+        votePercentageByParty : function (party) {
             if (party.length == 0 ) return '0 %'
             const total = party.reduce((prev, cur) => prev += parseInt( cur.votes_with_party_pct ), 0)
             return (total / party.length ).toFixed(2) + ' %'
         },
 
+        
+        
+        
+
+       
         createMemberObj : function (member) {
-            const memberObject = {}
-            memberObject.first_name = member.first_name || ''
-            memberObject.middle_name = member.middle_name || ''
-            memberObject.last_name = member.last_name || ''
-            memberObject.state = member.state || ''
-            memberObject.seniority = member.seniority || ''
-            memberObject.party = member.party || ''
-            memberObject.votes_with_party_pct = member.votes_with_party_pct + "%" || ''
-            return memberObject
+            return {
+                first_name : member.first_name || '',
+                middle_name : member.middle_name || '',
+                last_name : member.last_name || '',
+                state : member.state || '',
+                seniority : member.seniority || '',
+                party : member.party || '',
+                votes_with_party_pct : member.votes_with_party_pct + "%" || '', 
+            }
         },
+
+        // createLoyaltyArray : function (members) {
+        //     return members.map( (el) => {
+        //         const votesWithParty = Math.floor(el.total_votes * el.votes_with_party_pct / 100)
+        //         return { 
+        //             fullName : el.first_name + " " + (el.middle_name || '') + ' ' + el.last_name, 
+        //             votesWithParty: votesWithParty, 
+        //             votesWithPartyPercentage : el.votes_with_party_pct
+        //         }
+        //     }).sort(function(a, b){return b.votesWithPartyPercentage-a.votesWithPartyPercentage})
+        // },
 
         
         percentageOfMembersLoyalty : function (members, preference, percentage) {
-            const limit = Math.floor( (percentage * this.members.length) / 100 )
+
+            members = members.map( (el) => {
+                el.votesWithParty = Math.floor(el.total_votes * el.votes_with_party_pct / 100)
+                return el
+            }).sort(function(a, b){return b.votes_with_party_pct-a.votes_with_party_pct})
+
+            const limit = Math.floor( (percentage * members.length) / 100 )
             if (preference == 'least') members = [...members].reverse()
-            let arr = []
-            let counter = 0
-            for (let i=0; i < members.length; i++) {
-                if ( counter > limit ) break
-                if (arr.length > 0) {
-                    if ( ! (arr[arr.length -1].votesWithPartyPercentage == members[i].votesWithPartyPercentage)) counter += 1
-                } 
+            let arr = members.splice(0,limit)
+            let i = 0;
+            while (members[i].missed_votes_pct == arr[arr.length -1].missed_votes_pct) {
                 arr.push(members[i])
+                i += 1
             }
+            
             return arr
         },
 
         percentageOfMembersEngagement : function (members, preference, percentage) {
-            const limit = Math.floor( (percentage * this.members.length) / 100 )
+            members = members.sort(function(a, b){return b.missed_votes_pct-a.missed_votes_pct})
+            const limit = Math.floor( (percentage * members.length) / 100 )
             if (preference == 'most') members = [...members].reverse()
-            let arr = []
-            let counter = 0
-            for (let i=0; i < members.length; i++) {
-                if ( counter > limit ) break
-                if ( arr.length > 0 && !(arr[arr.length -1].missedVotesPercentage == members[i].missedVotesPercentage)) counter += 1  
+            let arr = members.splice(0,limit)
+            let i = 0;
+            while (members[i].missed_votes_pct == arr[arr.length -1].missed_votes_pct) {
                 arr.push(members[i])
+                i += 1
             }
             return arr
         },
 
         // ************************************************************************************************************
 
-        updateDataChamber : function(event) {
+        fetchApiData : function (event) {
             this.toggleLoader('reveal')
-            this.chamber = this.currentPage == 'senate.html' ? 'senate' : 'house'
-            this.getData(this.chamber)
-                .then( members => {
-                    members = members.filter(el => this.selectedParties.indexOf(el.party) != -1)
-                    if (this.selectedState != "all") { members = members.filter(el => el.state == this.selectedState) }
-                    this.members = members.map(el => this.createMemberObj(el))
-                }).then(()=> {
-                    this.toggleLoader('hide')
-                    const tableBodyRows = document.getElementById('tablebody').children.length
-                    tableBodyRows == 0 ? document.getElementById('zero-results-box').classList.remove('hide-me') : document.getElementById('zero-results-box').classList.add('hide-me')                    
-                }).catch(err => console.log(err))
-        },
-
-        updateDataStatistics : function(event) {
-            this.toggleLoader('reveal')
-            if (event) {
-                if (event.target.name == 'chamber') this.chamber = event.target.value 
-                if (event.target.name == 'statistic') this.statistic = event.target.value
+            if (this.currentPage == 'statistics.html') {
+                if (event) {
+                    if (event.target.name == 'chamber') this.chamber = event.target.value 
+                    if (event.target.name == 'statistic') this.statistic = event.target.value
+                }
+            } else {
+                this.chamber = this.currentPage == 'senate.html' ? 'senate' : 'house'
             }
             this.getData(this.chamber)
                 .then( members => {
-                    this.members = members
-                    this.democrats = members.filter(el => el.party == 'D')
-                    this.republicans = members.filter(el => el.party == 'R')
-                    this.independents = members.filter(el => el.party == 'I')
-                    this.percentageVotedDemocrats = this.calculatePercentageVotedByParty(this.democrats)
-                    this.percentageVotedRepublicans = this.calculatePercentageVotedByParty(this.republicans)
-                    this.percentageVotedIndependents = this.calculatePercentageVotedByParty(this.independents)
-                    this.totalPercentage = this.calculatePercentageVotedByParty(this.members)
-                    if (this.statistic == 'attendance') {
-                        this.engagement.membersEngagementArray = this.createEngagementArray(this.members)
-                        this.engagement.mostEngaged = this.percentageOfMembersEngagement(this.engagement.membersEngagementArray, 'most', 10)//this.engagement.membersEngagementArray.slice(this.engagement.membersEngagementArray.length - tenPercent) 
-                        this.engagement.leastEngaged = this.percentageOfMembersEngagement(this.engagement.membersEngagementArray, 'least', 10)//this.engagement.membersEngagementArray.slice(0, tenPercent) 
+                    if (this.currentPage == 'statistics.html') {
+                        this.members = members
+                        this.democrats = this.filterByParty(this.members, 'D')
+                        this.republicans = this.filterByParty(this.members, 'R')
+                        this.independents = this.filterByParty(this.members, 'I')
+                        this.mostEngaged = this.percentageOfMembersEngagement(this.members, 'most', 10)
+                        this.leastEngaged = this.percentageOfMembersEngagement(this.members, 'least', 10)
+                        this.mostLoyal = this.percentageOfMembersLoyalty(this.members, 'most', 10)
+                        this.leastLoyal = this.percentageOfMembersLoyalty(this.members, 'least', 10)
                     } else {
-                        this.loyalty.membersLoyaltyArray = this.createLoyaltyArray(this.members)
-                        this.loyalty.leastLoyal = this.percentageOfMembersLoyalty(this.loyalty.membersLoyaltyArray, 'least', 10) //this.loyalty.membersLoyaltyArray.slice(0, tenPercent) 
-                        this.loyalty.mostLoyal = this.percentageOfMembersLoyalty(this.loyalty.membersLoyaltyArray, 'most', 10) //this.loyalty.membersLoyaltyArray.slice(this.loyalty.membersLoyaltyArray.length - tenPercent) 
+                        members = members.filter(el => this.selectedParties.indexOf(el.party) != -1)
+                        if (this.selectedState != "all") { members = members.filter(el => el.state == this.selectedState) }
+                        this.members = members.map(el => this.createMemberObj(el))
                     }
-                }).then(()=> this.toggleLoader('hide')).catch(err => console.log(err))
+                }).then(()=>{
+                    this.toggleLoader('hide')
+                    const tableBody = document.getElementById('tablebody')//.children.length
+                    if (tableBody) {
+                        const tableBodyRows = tableBody.children.length 
+                        tableBodyRows == 0 ? document.getElementById('zero-results-box').classList.remove('hide-me') : document.getElementById('zero-results-box').classList.add('hide-me')                    
+                    }
+
+                }).catch(err => console.log(err))
         },
 
     },
 
     created : function () {        
-        // this.onScrollAddEventListener()
         this.updateCurrentPage()
-        if ( this.currentPage == 'statistics.html') this.updateDataStatistics()
-        if ( this.currentPage == 'senate.html' || this.currentPage == 'representatives.html') {
-            this.states = states
-            this.updateDataChamber()
-        }
+        if (this.currentPage != 'index.html') this.fetchApiData()
+        if (this.currentPage == 'senate.html' || this.currentPage == 'representatives.html') this.states = states
     }
 
-    // computed methods and values
-    // function 10%
-    // no document.getElement -- replace with v-model
-    // manage the data better
-
+    // check datos actuales in the instance before fetching the data 
+    // remoev all the vanilla js 
 })
 
