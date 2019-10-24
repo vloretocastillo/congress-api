@@ -123,7 +123,7 @@
                 <tbody class="tablebody">
                     <tr class="tablero" v-for='member in leastEngaged'>
                         <td>
-                           {{ member.first_name }}
+                           {{ member.first_name + " " + (member.middle_name || '') + " " + member.last_name }}
                         </td>
                         <td>
                             {{ member.missed_votes }}
@@ -147,7 +147,7 @@
                 <tbody class="tablebody">
                     <tr class="tablerow" v-for='member in mostEngaged'>
                         <td>
-                            {{ member.first_name }}
+                            {{ member.first_name + " " + (member.middle_name || '') + " " + member.last_name }}
                         </td>
                         <td>
                             {{ member.missed_votes }}
@@ -175,7 +175,7 @@
                 <tbody class="tablebody">
                     <tr class="tablerow" v-for='member in leastLoyal'>
                         <td>
-                            {{ member.first_name }}
+                            {{ member.first_name + " " + (member.middle_name || '') + " " + member.last_name }}
                         </td>
                         <td>
                             {{ member.votesWithParty }}
@@ -199,7 +199,7 @@
                 <tbody class="tablebody">
                     <tr class="tablerow" v-for='member in mostLoyal'>
                         <td>
-                            {{ member.first_name }}
+                            {{ member.first_name + " " + (member.middle_name || '') + " " + member.last_name }}
                         </td>
                         <td>
                             {{ member.votesWithParty }}
