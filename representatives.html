@@ -72,7 +72,7 @@
             </tr>
         </thead>
         <tbody class="tablebody" id='tablebody' ref='tableBody'>
-              <tr class="tablerow" v-for='member in members'>
+              <tr class="tablerow" v-for='member in membersObjects'>
                 <td>{{ member.first_name + member.middle_name || '' + member.last_name }}</td>
                 <td>{{ member.state }}</td>
                 <td>{{ member.seniority }}</td>

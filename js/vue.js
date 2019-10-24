@@ -29,7 +29,8 @@ let app = new Vue({
         independents: [],
         mostEngaged : [],
         leastEngaged : [],
-        mostLoyal : []        
+        mostLoyal : [],
+        membersObjects: []     
     },
 
     methods : {
@@ -104,6 +105,7 @@ let app = new Vue({
         },
 
         percentageOfMembersEngagement : function (members, preference, percentage) {
+
             members = members.sort(function(a, b){return b.missed_votes_pct-a.missed_votes_pct})
             const limit = Math.floor( (percentage * members.length) / 100 )
             if (preference == 'most') members = [...members].reverse()
@@ -118,31 +120,45 @@ let app = new Vue({
 
         // ************************************************************************************************************
 
+        updateValueForChambers : function () {
+            this.chamber = this.currentPage == 'senate.html' ? 'senate' : 'house'
+        },
+
+        updateValuesForStatistics : function(event) {
+            if (event) {
+                if (event.target.name == 'chamber') this.chamber = event.target.value 
+                if (event.target.name == 'statistic') this.statistic = event.target.value
+            }
+        },
+
+        handleDataForStatistics : function (members) {
+            this.members = members
+            this.democrats = this.filterByParty(this.members, 'D')
+            this.republicans = this.filterByParty(this.members, 'R')
+            this.independents = this.filterByParty(this.members, 'I')
+            this.mostEngaged = this.percentageOfMembersEngagement(this.members, 'most', 10)
+            this.leastEngaged = this.percentageOfMembersEngagement(this.members, 'least', 10)
+            this.mostLoyal = this.percentageOfMembersLoyalty(this.members, 'most', 10)
+            this.leastLoyal = this.percentageOfMembersLoyalty(this.members, 'least', 10)
+        },
+
+        handleDataForChambers : function (members) {
+            this.members = members
+            const filteredByParty = this.members.filter(el => this.selectedParties.indexOf(el.party) != -1)
+            const filteredByState = (this.selectedState != "all") ? filteredByParty.filter(el => el.state == this.selectedState) : filteredByParty                       
+            this.membersObjects = filteredByState.map(el => this.createMemberObj(el))
+        },
+
         fetchApiData : function (event) {
             this.toggleLoader('reveal')
-            if (this.currentPage == 'statistics.html') {
-                if (event) {
-                    if (event.target.name == 'chamber') this.chamber = event.target.value 
-                    if (event.target.name == 'statistic') this.statistic = event.target.value
-                }
-            } else {
-                this.chamber = this.currentPage == 'senate.html' ? 'senate' : 'house'
-            }
+            if (this.currentPage == 'statistics.html')  this.updateValuesForStatistics(event)
+            else this.updateValueForChambers()
             this.getData(this.chamber)
                 .then( members => {
                     if (this.currentPage == 'statistics.html') {
-                        this.members = members
-                        this.democrats = this.filterByParty(this.members, 'D')
-                        this.republicans = this.filterByParty(this.members, 'R')
-                        this.independents = this.filterByParty(this.members, 'I')
-                        this.mostEngaged = this.percentageOfMembersEngagement(this.members, 'most', 10)
-                        this.leastEngaged = this.percentageOfMembersEngagement(this.members, 'least', 10)
-                        this.mostLoyal = this.percentageOfMembersLoyalty(this.members, 'most', 10)
-                        this.leastLoyal = this.percentageOfMembersLoyalty(this.members, 'least', 10)
+                        this.handleDataForStatistics(members)
                     } else {
-                        members = members.filter(el => this.selectedParties.indexOf(el.party) != -1)
-                        if (this.selectedState != "all") { members = members.filter(el => el.state == this.selectedState) }
-                        this.members = members.map(el => this.createMemberObj(el))
+                        this.handleDataForChambers(members)
                     }
                 }).then(()=>{
                     this.toggleLoader('hide')
@@ -152,7 +168,7 @@ let app = new Vue({
                     }
                 }).catch(err => console.log(err))
         },
-
+        
     },
 
     created : function () {        
