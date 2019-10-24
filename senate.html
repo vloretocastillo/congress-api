@@ -72,7 +72,7 @@
                 <td scope="col">Votes Percentage</td>
             </tr>
           </thead>
-          <tbody class="tablebody" id='tablebody'>
+          <tbody class="tablebody" id='tablebody' ref='tableBody'>
               <tr class="tablerow" v-for='member in members'>
                 <td>{{ member.first_name + ' ' + member.middle_name + ' ' + member.last_name }}</td>
                 <td>{{ member.state }}</td>
@@ -82,7 +82,7 @@
               </tr>
           </tbody>
       </table>  
-      <div class="hide-me zero-results-box" id="zero-results-box">
+      <div class="zero-results-box" id="zero-results-bo" v-if='noResultsBox'>
         <p>No results matched your search criteria</p>
       </div>
     </div>

@@ -22,6 +22,7 @@ let app = new Vue({
         states : [],
         selectedState: 'all',
         selectedParties : ['R', 'D', 'I'],
+        noResultsBox : false,
         members: [],
         democrats: [],
         republicans : [],
@@ -145,12 +146,10 @@ let app = new Vue({
                     }
                 }).then(()=>{
                     this.toggleLoader('hide')
-                    const tableBody = document.getElementById('tablebody')//.children.length
-                    if (tableBody) {
-                        const tableBodyRows = tableBody.children.length 
-                        tableBodyRows == 0 ? document.getElementById('zero-results-box').classList.remove('hide-me') : document.getElementById('zero-results-box').classList.add('hide-me')                    
+                    if (this.$refs['tableBody']) {
+                        const tableBodyRows = this.$refs['tableBody'].children.length
+                        this.noResultsBox =   tableBodyRows == 0 ? true : false      
                     }
-
                 }).catch(err => console.log(err))
         },
 
@@ -163,6 +162,5 @@ let app = new Vue({
     }
 
     // check datos actuales in the instance before fetching the data 
-    // remoev all the vanilla js 
 })
 
