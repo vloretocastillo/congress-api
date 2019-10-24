@@ -45,20 +45,6 @@ let app = new Vue({
 
         // ***********************************************************************************************************************
 
-        getData : async function (chamber) {
-            const response = await fetch(`https://api.propublica.org/congress/v1/113/${chamber}/members.json`, {
-                method: 'GET',
-                headers: {
-                    'X-API-Key': 'VW1RX1TgbPr1hp9uHtgJW2Nr01QcNzQAm8CqrDGl',
-                }
-            });
-            const json = await response.json();
-            const members = await json['results'][0]['members']
-            return members;
-        },
-
-        // ***********************************************************************************************************************
-
         filterByParty : function (members, party) { return members.filter(el => el.party == party) },
 
         // ***********************************************************************************************************************
@@ -149,7 +135,24 @@ let app = new Vue({
             this.membersObjects = filteredByState.map(el => this.createMemberObj(el))
         },
 
-        fetchApiData : function (event) {
+        // ***********************************************************************************************************************
+
+        getData : async function (chamber) {
+            const response = await fetch(`https://api.propublica.org/congress/v1/113/${chamber}/members.json`, {
+                method: 'GET',
+                headers: {
+                    'X-API-Key': 'VW1RX1TgbPr1hp9uHtgJW2Nr01QcNzQAm8CqrDGl',
+                }
+            });
+            const json = await response.json();
+            const members = await json['results'][0]['members']
+            return members;
+        },
+
+        // ***********************************************************************************************************************
+
+
+        fetchAndRenderData : function (event) {
             this.toggleLoader('reveal')
             if (this.currentPage == 'statistics.html')  this.updateValuesForStatistics(event)
             else this.updateValueForChambers()
@@ -173,10 +176,9 @@ let app = new Vue({
 
     created : function () {        
         this.updateCurrentPage()
-        if (this.currentPage != 'index.html') this.fetchApiData()
+        if (this.currentPage != 'index.html') this.fetchAndRenderData() 
         if (this.currentPage == 'senate.html' || this.currentPage == 'representatives.html') this.states = states
     }
 
-    // check datos actuales in the instance before fetching the data 
 })
 

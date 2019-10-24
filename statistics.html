@@ -34,7 +34,7 @@
     <div class="main-container" >
         <h1>Statistics</h1>
         <section class="filter filter-chamber">
-            <select  name="chamber" id="party-attendance" v-on:change="fetchApiData($event)">
+            <select  name="chamber" id="party-attendance" v-on:change="fetchAndRenderData($event)">
                 <option value="senate" selected=true>Senate</option>
                 <option value="house">House</option>
             </select>
@@ -101,10 +101,10 @@
 
         <section class="filter filter-statistic-type">
             <div>
-                <input v-on:click="fetchApiData($event)" type="radio" name="statistic" value="attendance" checked=true>Attendance
+                <input v-on:click="fetchAndRenderData($event)" type="radio" name="statistic" value="attendance" checked=true>Attendance
             </div>
             <div>
-                <input v-on:click="fetchApiData($event)" type="radio" name="statistic" value="loyalty"> Loyalty
+                <input v-on:click="fetchAndRenderData($event)" type="radio" name="statistic" value="loyalty"> Loyalty
             </div>
         </section> 
 
