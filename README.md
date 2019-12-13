@@ -1,5 +1,5 @@
 # Congress-Api
-Visit the project - https://vloretocastillo.github.io/congress-api/
+Visit the project -https://vloretocastillo.github.io/congress-api/
 
 ***if live data is not loading, API key might have expired.
 
