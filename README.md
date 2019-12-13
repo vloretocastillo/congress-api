@@ -1,6 +1,5 @@
 # Congress-Api
-
-Visit the project - https://vloretocastillo.github.io/congress-api/.
+Visit the project - https://vloretocastillo.github.io/congress-api/
 
 ***if live data is not loading, API key might have expired.
 
@@ -13,5 +12,3 @@ Process:
 Technologies:
 
 JavaScript and JavaScript libraries, such as jQuery and Vue JS AJAX (Asynchronous JavaScript and XML) to communicate directly with web services from a web page JSON (JavaScript Object Notation) RESTful (Representational State Transfer) APIs (Application Program Interfaces) to standardize the messages used to get JSON objects with AJAX calls
-
-
